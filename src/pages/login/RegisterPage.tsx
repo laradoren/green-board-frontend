@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from "../../components/ui/button";
 import { RegisterForm } from "../../components/form/register-form";
 
-const RegisterPage = () => {
+export const RegisterPage = () => {
     return (
         <div className="flex min-h-full flex-col justify-center px-6 py-6 lg:px-8">
             <Card className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -22,5 +22,3 @@ const RegisterPage = () => {
         </div>
     );
 }
-
-export default RegisterPage;

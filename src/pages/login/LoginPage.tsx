@@ -2,8 +2,7 @@ import { LoginForm } from "../../components/form/login-form";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
 import { BiSolidLeaf } from "react-icons/bi";
-
-const LoginPage = () => {
+export const LoginPage = () => {
     return (
         <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
             <Card className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
@@ -24,5 +23,3 @@ const LoginPage = () => {
         </div>
     );
 }
-
-export default LoginPage;

@@ -1,13 +1,16 @@
 import './App.css';
-import LoginPage from "./pages/login/LoginPage";
 import './globals.css'
-import RegisterPage from "./pages/login/RegisterPage";
+import {Route, Routes} from "react-router-dom";
+import {NavigationBar, TeachersList} from "./pages";
 
 function App() {
   return (
-    <div className="main-page">
-        <RegisterPage />
-    </div>
+      <div className="main-page bg-accent relative flex min-h-screen flex-col">
+          <Routes>
+              <Route path={"/list"} element={<TeachersList />} />
+          </Routes>
+          <NavigationBar currentRole={"admin"} />
+      </div>
   );
 }
 
