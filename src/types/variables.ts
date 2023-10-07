@@ -1,7 +1,7 @@
 export interface NavigationOptionType {
-    title: string,
-    role: string,
-    href: string,
+    title: string
+    role: string
+    href: string
     type: string
 }
 
