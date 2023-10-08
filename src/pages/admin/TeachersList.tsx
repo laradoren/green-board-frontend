@@ -36,7 +36,7 @@ import {
     TableRow,
 } from "../../components/ui/table"
 import {PageWrapper} from "../../components/wrapper/page-wrapper";
-import {Teacher} from "../../types/entities";
+import {Teacher} from "../../types";
 
 const data: Teacher[] = [
     {
