@@ -134,8 +134,6 @@ export const columns: ColumnDef<HomeTask>[] = [
         id: "actions",
         enableHiding: false,
         cell: ({ row }: {row: any}) => {
-            const payment = row.original
-
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>

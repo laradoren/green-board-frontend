@@ -26,5 +26,21 @@ export type HomeTask = {
     file: string
     date: string
     status: "success"|"pending"|"fail"
+}
+
+export type Group = {
+    id: string
+    title: string
+    students: Student[]
+}
+
+export type Student = {
+    id: string
+    name: string
+    surname: string
+    lastname: string
+    score: string
+    firstAttestation: boolean|null
+    secondAttestation: boolean|null
 
 }

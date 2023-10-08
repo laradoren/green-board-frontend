@@ -133,8 +133,6 @@ export const columns: ColumnDef<Teacher>[] = [
         id: "actions",
         enableHiding: false,
         cell: ({ row }: {row: any}) => {
-            const payment = row.original
-
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -145,11 +143,6 @@ export const columns: ColumnDef<Teacher>[] = [
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem
-                            onClick={() => navigator.clipboard.writeText(payment.id)}
-                        >
-                            Copy payment ID
-                        </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem>View customer</DropdownMenuItem>
                         <DropdownMenuItem>View payment details</DropdownMenuItem>

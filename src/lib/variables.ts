@@ -40,10 +40,10 @@ export const navigationOptions: NavigationOptionType[] = [
         type: "tasks"
     },
     {
-        title: "Повідомлення",
+        title: "Електронний журнал",
         role: "teacher",
-        href: "/messenger",
-        type: "messenger"
+        href: "/study/list",
+        type: "study"
     },
     {
         title: "Календар",
