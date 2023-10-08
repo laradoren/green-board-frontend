@@ -14,10 +14,9 @@ import {
     useReactTable,
 } from "@tanstack/react-table"
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react"
-
-import { Button } from "../../components/ui/button"
-import { Checkbox } from "../../components/ui/checkbox"
 import {
+    Button,
+    Checkbox,
     DropdownMenu,
     DropdownMenuCheckboxItem,
     DropdownMenuContent,
@@ -25,16 +24,14 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from "../../components/ui/dropdown-menu"
-import { Input } from "../../components/ui/input"
-import {
+    Input,
     Table,
     TableBody,
     TableCell,
     TableHead,
     TableHeader,
     TableRow,
-} from "../../components/ui/table"
+} from "../../components/ui"
 import {PageWrapper} from "../../components/wrapper/page-wrapper";
 import {Teacher} from "../../types";
 

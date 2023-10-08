@@ -1,23 +1,15 @@
 import {PageWrapper} from "../../components/wrapper/page-wrapper";
 import * as React from "react";
 import {
-    Separator,
     ScrollArea,
-    Button,
     Tabs,
     TabsContent,
     TabsList,
     TabsTrigger,
-    DropdownMenu,
-    DropdownMenuTrigger,
-    DropdownMenuContent,
-    DropdownMenuLabel,
-    DropdownMenuItem,
-    DropdownMenuSeparator,
-    Progress
 } from "../../components/ui";
 import {Subject, Task} from "../../types";
-import {MoreHorizontal} from "lucide-react";
+import {TaskItem} from "./TaskItem";
+import {SubjectActions} from "./SubjectActions";
 
 const subjects:Subject[] = [
     {
@@ -69,22 +61,7 @@ const subjects:Subject[] = [
 export const SubjectList = () => {
     return (
         <PageWrapper className="w-full" title={"Дисципліни"}>
-            <div className="flex justify-between items-center">
-                <Button
-                    variant="secondary"
-                    className="dark"
-                    size="lg"
-                >
-                    Додати нову дисципліну
-                </Button>
-                <Button
-                    variant="secondary"
-                    className="dark"
-                    size="lg"
-                >
-                    Створити нове завдання
-                </Button>
-            </div>
+            <SubjectActions />
             <Tabs defaultValue={subjects[0].id} className="flex justify-between items-start py-4">
                 <TabsList className="flex flex-col w-96 items-center h-full">
                     {
@@ -120,36 +97,5 @@ const TaskList = ({tasks}: {tasks: Task[]}) => {
                 }
             </div>
         </ScrollArea>
-    )
-}
-
-const TaskItem = ({task} : {task: Task}) => {
-    return (
-        <>
-            <div className="w-full flex justify-between items-center p-4">
-                <div className="whitespace-nowrap overflow-hidden mr-1">{task.title}</div>
-                <div className="whitespace-nowrap overflow-hidden cursor-pointer mr-1">{task.file}</div>
-                <div className="w-[45%] w-full flex items-center">
-                    <Progress value={13} className="mr-4" />
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
-                                <span className="sr-only">Open menu</span>
-                                <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Деталі</DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem>Перегляд</DropdownMenuItem>
-                            <DropdownMenuItem>Редагування</DropdownMenuItem>
-                            <DropdownMenuItem>Видалити</DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                </div>
-
-            </div>
-            <Separator className="my-2" />
-        </>
     )
 }

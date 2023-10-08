@@ -1,4 +1,4 @@
-import {NavigationOptionType} from "../types";
+import {DialogOptionsType, NavigationOptionType} from "../types";
 
 export const navigationOptions: NavigationOptionType[] = [
     /******************AdminRole******************/
@@ -52,4 +52,23 @@ export const navigationOptions: NavigationOptionType[] = [
         type: "calendar"
     }
     /******************StudentRole******************/
-]
+];
+
+export const dialogOptions:DialogOptionsType = {
+    newSubject: {
+        header: "Додання нової дисципліни",
+        button: "Додати"
+    },
+    newTask: {
+        header: "Публікація нового завдання",
+        button: "Створити"
+    },
+    editTask: {
+        header: "Додати зміни в завдання",
+        button: "Зберегти"
+    },
+    deleteTask: {
+        header: "Ви справді хочете видалити це завдання?",
+        button: "Видалити"
+    }
+}

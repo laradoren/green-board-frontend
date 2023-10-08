@@ -1,6 +1,5 @@
 import { LoginForm } from "../../components/form/login-form";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../../components/ui/card";
-import { Button } from "../../components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle, Button } from "../../components/ui";
 import { BiSolidLeaf } from "react-icons/bi";
 export const LoginPage = () => {
     return (
