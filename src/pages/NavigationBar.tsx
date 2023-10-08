@@ -13,7 +13,7 @@ export const NavigationBar = ({currentRole}: {currentRole:string}) => {
             <NavigationMenuList>
                 {
                     navigationOptions.map((option, index) => {
-                        return option.role === currentRole && <NavigationItem option={option} />
+                        return option.role === currentRole && <NavigationItem option={option} key={index} />
                         }
                     )
                 }

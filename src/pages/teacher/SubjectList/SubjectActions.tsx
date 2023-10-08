@@ -2,12 +2,12 @@ import {
     Button,
     Dialog,
     DialogTrigger
-} from "../../components/ui";
-import {TaskForm} from "../../components/form/task-form";
-import {SubjectForm} from "../../components/form/subject-form";
+} from "../../../components/ui";
+import {TaskForm} from "../../../components/form/task-form";
+import {SubjectForm} from "../../../components/form/subject-form";
 import * as React from "react";
-import {DialogWrapper} from "../../components/wrapper/dialog-wrapper";
-import {dialogOptions} from "../../lib/variables";
+import {DialogWrapper} from "../../../components/wrapper/dialog-wrapper";
+import {dialogOptions} from "../../../lib/variables";
 
 export const SubjectActions = () => {
     return (

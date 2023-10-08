@@ -1,4 +1,4 @@
-import {PageWrapper} from "../../components/wrapper/page-wrapper";
+import {PageWrapper} from "../../../components/wrapper/page-wrapper";
 import * as React from "react";
 import {
     ScrollArea,
@@ -6,8 +6,8 @@ import {
     TabsContent,
     TabsList,
     TabsTrigger,
-} from "../../components/ui";
-import {Subject, Task} from "../../types";
+} from "../../../components/ui";
+import {Subject, Task} from "../../../types";
 import {TaskItem} from "./TaskItem";
 import {SubjectActions} from "./SubjectActions";
 
@@ -67,7 +67,7 @@ export const SubjectList = () => {
                     {
                         subjects.map((subject:Subject) => {
                             return (
-                                <TabsTrigger className="p-3 w-full" value={subject.id}>{subject.title}</TabsTrigger>
+                                <TabsTrigger key={subject.id} className="p-3 w-full" value={subject.id}>{subject.title}</TabsTrigger>
                             )
                     })
                     }
@@ -75,7 +75,7 @@ export const SubjectList = () => {
                 {
                     subjects.map((subject:Subject) => {
                         return (
-                            <TabsContent className="mt-0" value={subject.id}><TaskList tasks={subject.tasks} /></TabsContent>
+                            <TabsContent className="mt-0" key={subject.id} value={subject.id}><TaskList tasks={subject.tasks} /></TabsContent>
                         )
                     })
                 }
@@ -93,7 +93,7 @@ const TaskList = ({tasks}: {tasks: Task[]}) => {
                         <div className="text-center">
                             Для цієї дисципліни ще не створювались завдання
                         </div>
-                    ) : tasks.map((task:Task) => <TaskItem task={task} />)
+                    ) : tasks.map((task:Task) => <TaskItem task={task} key={task.id} />)
                 }
             </div>
         </ScrollArea>

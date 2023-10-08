@@ -17,3 +17,8 @@ export interface DialogOptionType {
     children?: ReactNode
 }
 
+export type BadgeOptionType = {
+    title:string
+    variant:"default" | "destructive" | "outline" | "secondary" | null | undefined
+}
+

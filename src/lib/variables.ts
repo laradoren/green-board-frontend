@@ -36,7 +36,7 @@ export const navigationOptions: NavigationOptionType[] = [
     {
         title: "Перевірка завдань",
         role: "teacher",
-        href: "/task/list",
+        href: "/hometask/list",
         type: "tasks"
     },
     {

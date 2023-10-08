@@ -18,5 +18,13 @@ export type Task = {
     description: string
     file: string
     deadline: string
+}
+
+export type HomeTask = {
+    id: string
+    student: string
+    file: string
+    date: string
+    status: "success"|"pending"|"fail"
 
 }

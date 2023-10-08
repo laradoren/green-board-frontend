@@ -1,4 +1,4 @@
-import {Task} from "../../types";
+import {Task} from "../../../types";
 import {
     Button, Dialog, DialogTrigger,
     DropdownMenu,
@@ -6,12 +6,12 @@ import {
     DropdownMenuLabel, DropdownMenuSeparator,
     DropdownMenuTrigger,
     Progress, Separator
-} from "../../components/ui";
+} from "../../../components/ui";
 import {MoreHorizontal} from "lucide-react";
 import * as React from "react";
-import {DialogWrapper} from "../../components/wrapper/dialog-wrapper";
-import {dialogOptions} from "../../lib/variables";
-import {TaskForm} from "../../components/form/task-form";
+import {DialogWrapper} from "../../../components/wrapper/dialog-wrapper";
+import {dialogOptions} from "../../../lib/variables";
+import {TaskForm} from "../../../components/form/task-form";
 
 export const TaskItem = ({task} : {task: Task}) => {
     return (
