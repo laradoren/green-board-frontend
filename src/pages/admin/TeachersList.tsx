@@ -191,8 +191,6 @@ export function TeachersList() {
     return (
         <PageWrapper className="w-full" title={"Списки викладачів"}>
             <Button
-                variant="secondary"
-                className="dark"
                 size="lg"
                 onClick={() => table.previousPage()}
             >

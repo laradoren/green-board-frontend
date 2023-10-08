@@ -15,8 +15,6 @@ export const SubjectActions = () => {
             <Dialog>
                 <DialogTrigger>
                     <Button
-                        variant="secondary"
-                        className="dark"
                         size="lg"
                     >
                         Додати нову дисципліну
@@ -29,8 +27,6 @@ export const SubjectActions = () => {
             <Dialog>
                 <DialogTrigger>
                     <Button
-                        variant="secondary"
-                        className="dark"
                         size="lg"
                     >
                         Публікація завдання
