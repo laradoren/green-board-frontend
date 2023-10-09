@@ -39,8 +39,9 @@ export type Student = {
     name: string
     surname: string
     lastname: string
-    score: string
+    currentScore: string
     firstAttestation: boolean|null
     secondAttestation: boolean|null
+    result: string
 
 }
