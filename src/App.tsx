@@ -5,6 +5,7 @@ import {NavigationBar, SubjectList, TeachersList} from "./pages";
 import {Card} from "./components/ui";
 import {HometaskList} from "./pages/teacher/HometaskList";
 import {StudyList} from "./pages/teacher/StudyList";
+import {GroupList} from "./pages/admin/GroupList";
 
 function App() {
   return (
@@ -12,12 +13,13 @@ function App() {
           <Card className="m-5">
               <Routes>
                   <Route path={"teacher/list"} element={<TeachersList />} />
+                  <Route path={"group/list"} element={<GroupList />} />
                   <Route path={"subject/list"} element={<SubjectList />} />
                   <Route path={"hometask/list"} element={<HometaskList />} />
                   <Route path={"study/list"} element={<StudyList />} />
               </Routes>
           </Card>
-          <NavigationBar currentRole={"teacher"} />
+          <NavigationBar currentRole={"admin"} />
       </div>
   );
 }

@@ -9,22 +9,10 @@ export const navigationOptions: NavigationOptionType[] = [
         type: "teachers"
     },
     {
-        title: "Статистика",
+        title: "Список груп",
         role: "admin",
-        href: "/statistics",
-        type: "statistics"
-    },
-    {
-        title: "Повідомлення",
-        role: "admin",
-        href: "/statistics",
-        type: "statistics"
-    },
-    {
-        title: "Календар",
-        role: "admin",
-        href: "/statistics",
-        type: "statistics"
+        href: "group/list",
+        type: "group"
     },
     /******************TeacherRole******************/
     {
