@@ -9,8 +9,8 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from "../ui/form"
-import { Input } from "../ui/input"
+    Input
+} from "../ui"
 import { useForm } from "react-hook-form";
 
 const registerSchema = z.object({

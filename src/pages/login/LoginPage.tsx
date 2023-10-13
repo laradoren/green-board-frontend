@@ -1,6 +1,5 @@
 import { LoginForm } from "../../components/form/login-form";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../../components/ui/card";
-import { Button } from "../../components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle, Button } from "../../components/ui";
 import { BiSolidLeaf } from "react-icons/bi";
 export const LoginPage = () => {
     return (
@@ -8,7 +7,7 @@ export const LoginPage = () => {
             <Card className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                 <CardHeader>
                     <CardTitle>
-                        <BiSolidLeaf className="mx-auto h-10 w-auto" />
+                        <BiSolidLeaf className="mx-auto h-10 w-auto fill-green-700" />
                         <h2 className="mt-5 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Вхід
                             до особистого кабінету</h2>
                     </CardTitle>

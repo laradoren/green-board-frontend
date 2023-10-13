@@ -1,5 +1,4 @@
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../../components/ui/card";
-import { Button } from "../../components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle, Button } from "../../components/ui";
 import { RegisterForm } from "../../components/form/register-form";
 
 export const RegisterPage = () => {

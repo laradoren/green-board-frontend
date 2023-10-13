@@ -13,20 +13,21 @@ import {
 } from "../ui"
 import { useForm } from "react-hook-form";
 
-const loginSchema = z.object({
-    username: z.string().min(2).max(50),
-    password: z.string().min(5).max(20),
+const subjectSchema = z.object({
+    title: z.string().min(2).max(50),
+    groups: z.string().min(5).max(20),
 });
 
-export const LoginForm = () => {
-    const form = useForm<z.infer<typeof loginSchema>>({
-        resolver: zodResolver(loginSchema),
+export const SubjectForm = () => {
+    const form = useForm<z.infer<typeof subjectSchema>>({
+        resolver: zodResolver(subjectSchema),
         defaultValues: {
-            username: "",
+            title: "",
+            groups: "",
         },
     })
 
-    function onSubmit(values: z.infer<typeof loginSchema>) {
+    function onSubmit(values: z.infer<typeof subjectSchema>) {
         console.log(values)
     }
 
@@ -35,12 +36,12 @@ export const LoginForm = () => {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                 <FormField
                     control={form.control}
-                    name="username"
+                    name="title"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Логін</FormLabel>
+                            <FormLabel>Назва</FormLabel>
                             <FormControl>
-                                <Input placeholder="Введіть логін" {...field} />
+                                <Input placeholder="Введіть назву" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -48,12 +49,12 @@ export const LoginForm = () => {
                 />
                 <FormField
                     control={form.control}
-                    name="password"
+                    name="groups"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Пароль</FormLabel>
+                            <FormLabel>Групи</FormLabel>
                             <FormControl>
-                                <Input placeholder="Введіть пароль" {...field} />
+                                <Input placeholder="Оберіть групи" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>

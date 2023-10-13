@@ -14,10 +14,9 @@ import {
     useReactTable,
 } from "@tanstack/react-table"
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react"
-
-import { Button } from "../../components/ui/button"
-import { Checkbox } from "../../components/ui/checkbox"
 import {
+    Button,
+    Checkbox,
     DropdownMenu,
     DropdownMenuCheckboxItem,
     DropdownMenuContent,
@@ -25,18 +24,16 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from "../../components/ui/dropdown-menu"
-import { Input } from "../../components/ui/input"
-import {
+    Input,
     Table,
     TableBody,
     TableCell,
     TableHead,
     TableHeader,
     TableRow,
-} from "../../components/ui/table"
+} from "../../components/ui"
 import {PageWrapper} from "../../components/wrapper/page-wrapper";
-import {Teacher} from "../../types/entities";
+import {Teacher} from "../../types";
 
 const data: Teacher[] = [
     {
@@ -136,8 +133,6 @@ export const columns: ColumnDef<Teacher>[] = [
         id: "actions",
         enableHiding: false,
         cell: ({ row }: {row: any}) => {
-            const payment = row.original
-
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -148,11 +143,6 @@ export const columns: ColumnDef<Teacher>[] = [
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem
-                            onClick={() => navigator.clipboard.writeText(payment.id)}
-                        >
-                            Copy payment ID
-                        </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem>View customer</DropdownMenuItem>
                         <DropdownMenuItem>View payment details</DropdownMenuItem>
@@ -194,8 +184,6 @@ export function TeachersList() {
     return (
         <PageWrapper className="w-full" title={"Списки викладачів"}>
             <Button
-                variant="secondary"
-                className="dark"
                 size="lg"
                 onClick={() => table.previousPage()}
             >
@@ -221,7 +209,6 @@ export function TeachersList() {
                             .getAllColumns()
                             .filter((column:any) => column.getCanHide())
                             .map((column:any) => {
-                                console.log(column);
                                 return (
                                     <DropdownMenuCheckboxItem
                                         key={column.id}
