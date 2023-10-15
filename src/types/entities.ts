@@ -43,5 +43,19 @@ export type Student = {
     firstAttestation: boolean|null
     secondAttestation: boolean|null
     result: string
+}
 
+export interface IUserData {
+    token: string
+    data: IUser
+}
+
+export interface IUser {
+    role: string,
+    fullname: string
+    email: string
+}
+
+export function isUserType(o: any): o is IUser {
+    return "role" in o && "fullname" in o && "email" in o;
 }

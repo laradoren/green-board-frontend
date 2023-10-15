@@ -1,7 +1,9 @@
-import { LoginForm } from "../../components/form/login-form";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle, Button } from "../../components/ui";
+import { LoginForm } from "../../components/form";
+import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui";
 import { BiSolidLeaf } from "react-icons/bi";
-export const LoginPage = () => {
+import {Dispatch, SetStateAction} from "react";
+import {IUserData} from "../../types";
+export const LoginPage = ({setCurrentUser}: {setCurrentUser: Dispatch<SetStateAction<IUserData>>}) => {
     return (
         <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
             <Card className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
@@ -13,11 +15,8 @@ export const LoginPage = () => {
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <LoginForm/>
+                    <LoginForm setCurrentUser={setCurrentUser}/>
                 </CardContent>
-                <CardFooter>
-                    <Button className="flex h-10 w-full" type="submit">Вхід</Button>
-                </CardFooter>
             </Card>
         </div>
     );

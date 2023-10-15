@@ -14,6 +14,12 @@ export const navigationOptions: NavigationOptionType[] = [
         href: "group/list",
         type: "group"
     },
+    {
+        title: "Вийти з системи",
+        role: "admin",
+        href: "logout",
+        type: "logout"
+    },
     /******************TeacherRole******************/
     {
         title: "Список предметів",
