@@ -28,9 +28,13 @@ function App() {
                           <Route path={"logout"} element={<LogoutPage />} />
                       </Routes>
                   </Card>
-                  <NavigationBar currentRole={"admin"} />
+                  <NavigationBar currentRole={currentUser.data.role} />
               </>
-              : <LoginPage />
+              : <Routes>
+                  <Route path="/" element={<LoginPage />} />
+                  <Route path={"login"} element={<LoginPage />} />
+                  <Route path={"register"} element={<RegisterPage />} />
+              </Routes>
           }
 
       </div>

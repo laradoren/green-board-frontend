@@ -44,8 +44,20 @@ export const navigationOptions: NavigationOptionType[] = [
         role: "teacher",
         href: "/calendar",
         type: "calendar"
-    }
+    },
+    {
+        title: "Вийти з системи",
+        role: "teacher",
+        href: "logout",
+        type: "logout"
+    },
     /******************StudentRole******************/
+    {
+        title: "Вийти з системи",
+        role: "student",
+        href: "logout",
+        type: "logout"
+    },
 ];
 
 export const dialogOptions:DialogOptionsType = {

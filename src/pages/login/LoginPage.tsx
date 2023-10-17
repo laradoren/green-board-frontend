@@ -1,10 +1,8 @@
 import { LoginForm } from "../../components/form";
 import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "../../components/ui";
 import { BiSolidLeaf } from "react-icons/bi";
-import {useContext} from "react";
-import GlobalContext from "../../context/GlobalContext";
+import {Link} from "react-router-dom";
 export const LoginPage = () => {
-    const { setLoginState } = useContext(GlobalContext);
     return (
         <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
             <Card className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
@@ -19,7 +17,7 @@ export const LoginPage = () => {
                     <LoginForm />
                 </CardContent>
                 <CardFooter>
-                    <div onClick={() => setLoginState(false)} className={"w-full text-center underline cursor-pointer text-sm"}>Перший раз у системі? </div>
+                    <Link to={"/register"} className={"w-full text-center underline cursor-pointer text-sm"}>Перший раз у системі? </Link>
                 </CardFooter>
             </Card>
         </div>

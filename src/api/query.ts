@@ -34,3 +34,20 @@ export const GET_ALL_STUDENTS = gql`
         }
     }
 `
+export const FIND_USER = gql`
+    query FindUser($email: String!) {
+        findUser(email: $email) {
+            fullname
+        }
+    }
+`
+export const REGISTER_USER = gql`
+    mutation Register($email: String!, $password: String!) {
+        register(email: $email, password: $password) {
+            token user {
+                role fullname email
+            }
+        }
+    }
+`
+

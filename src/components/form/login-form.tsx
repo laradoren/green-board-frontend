@@ -35,6 +35,7 @@ export const LoginForm = () => {
             setCurrentUser({ token, data: user });
             localStorage.setItem("token", "Bearer " + token);
             localStorage.setItem("data", JSON.stringify(user));
+            window.location.href = '/';
         }
     });
     const form = useForm<z.infer<typeof loginSchema>>({

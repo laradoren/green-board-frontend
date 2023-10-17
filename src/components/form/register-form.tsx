@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import {
+    Button,
     Form,
     FormControl,
     FormField,
@@ -12,100 +13,113 @@ import {
     Input
 } from "../ui"
 import { useForm } from "react-hook-form";
+import {useLazyQuery, useMutation} from "@apollo/client";
+import {FIND_USER, REGISTER_USER} from "../../api";
+import {useContext, useState} from "react";
+import GlobalContext from "../../context/GlobalContext";
+
+const findUserSchema = z.object({
+    email: z.string().min(5).max(50),
+    fullname: z.string().optional(),
+});
 
 const registerSchema = z.object({
-    name: z.string().min(5).max(20),
-    surname: z.string().min(5).max(20),
-    lastname: z.string().min(5).max(20),
-    email: z.string().min(5).max(20),
-    password: z.string().min(5).max(20),
+    password: z.string().min(5).max(50),
 });
 
 export const RegisterForm = () => {
-    const form = useForm<z.infer<typeof registerSchema>>({
+    const { setCurrentUser } = useContext(GlobalContext);
+
+    const [findUser] = useLazyQuery(FIND_USER);
+    const [registerUser] = useMutation(REGISTER_USER);
+
+    const findUserForm = useForm<z.infer<typeof findUserSchema>>({
+        resolver: zodResolver(findUserSchema),
+        defaultValues: {
+            email: "",
+            fullname: ""
+        },
+    });
+
+    const registerForm = useForm<z.infer<typeof registerSchema>>({
         resolver: zodResolver(registerSchema),
         defaultValues: {
-            name: "",
-            surname: "",
-            lastname: "",
-            email: "",
             password: "",
         },
-    })
+    });
 
-    function onSubmit(values: z.infer<typeof registerSchema>) {
-        console.log(values)
+    const [disabled, setDisabled] = useState(true);
+
+    function onUserFind(values: z.infer<typeof findUserSchema>) {
+        findUser({variables: {email: values.email}}).then((result) => {
+            const name = result.data.findUser.fullname;
+            findUserForm.setValue("fullname", name);
+            setDisabled(false);
+        });
+    }
+
+    function onRegistration(values: z.infer<typeof registerSchema>) {
+        const data = findUserForm.getValues();
+        registerUser({variables: {password: values.password, email: data.email}}).then((result) => {
+            let {token, user} = result.data.register;
+            setCurrentUser({ token, data: user });
+            localStorage.setItem("token", "Bearer " + token);
+            localStorage.setItem("data", JSON.stringify(user));
+            window.location.href = '/';
+        });
     }
 
     return (
-        <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-                <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Ім'я</FormLabel>
-                            <FormControl>
-                                <Input placeholder="Введіть ім'я" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="surname"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Прізвище</FormLabel>
-                            <FormControl>
-                                <Input placeholder="Введіть прізвище" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="lastname"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>По-батькові</FormLabel>
-                            <FormControl>
-                                <Input placeholder="Введіть по-батькові" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Електронна пошта</FormLabel>
-                            <FormControl>
-                                <Input placeholder="Введіть пошту" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="password"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Пароль</FormLabel>
-                            <FormControl>
-                                <Input placeholder="Введіть пароль" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-            </form>
-        </Form>
+        <>
+            <Form {...findUserForm}>
+                <form onSubmit={findUserForm.handleSubmit(onUserFind)} className="space-y-5 mb-10">
+                    <FormField
+                        control={findUserForm.control}
+                        name="email"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Електронна пошта</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Введіть пошту" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={findUserForm.control}
+                        name="fullname"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Повне ім'я</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Перевірте ваше ім'я" disabled={true} {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <Button className="flex h-10 w-full" variant={"outline"} type="submit">Знайти</Button>
+                </form>
+            </Form>
+            <Form {...registerForm}>
+                <form onSubmit={registerForm.handleSubmit(onRegistration)} className="space-y-5">
+                    <FormField
+                        control={registerForm.control}
+                        name="password"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Пароль</FormLabel>
+                                <FormControl>
+                                    <Input disabled={disabled} placeholder="Введіть пароль" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <Button disabled={disabled} className="flex h-10 w-full" type="submit">Реєстрація</Button>
+                </form>
+            </Form>
+        </>
     )
 }
