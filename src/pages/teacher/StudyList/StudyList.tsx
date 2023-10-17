@@ -206,7 +206,7 @@ export const StudyList = () => {
                 </Select>
             </div>
 
-            <DateTable table={table} columns={columns} />
+            {/*<DateTable table={table} columns={columns} />*/}
         </PageWrapper>
     );
 }

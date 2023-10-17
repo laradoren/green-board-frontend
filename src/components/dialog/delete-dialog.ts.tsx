@@ -8,14 +8,12 @@ import {
 } from "../ui";
 import * as React from "react";
 import {DialogOptionType} from "../../types";
-import {useContext} from "react";
-import GlobalContext from "../../context/GlobalContext";
 
-export const DeleteDialog = ({header, button, list}: DialogOptionType) => {
-    const { deleteTeachersList } = useContext(GlobalContext);
-
+export const DeleteDialog = ({header, button, list, handleFunction}: DialogOptionType) => {
     const onDeleteClick = () => {
-        deleteTeachersList(list);
+        if(list && handleFunction) {
+            handleFunction(list);
+        }
     }
 
     return (

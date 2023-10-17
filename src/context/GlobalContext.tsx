@@ -11,12 +11,15 @@ const GlobalContext = React.createContext<IGlobalContext>({
         token: ""
     },
     setCurrentUser: (value: IUserData) => {},
-    dispatchCallTeachers: ({type, payload}: IDispatchCallTeachersProps) => {},
     allTeachers: [],
+    allStudents: [],
     createSingleTeacher: (data: any) => {},
     deleteTeachersList: (list: any) => {},
     createTeachersList: (list: any) => {},
     updateTeachersList: (data: any) => {},
+    createGroup: (code: string, students: any) => {},
+    deleteStudentsList: (list: any) => {},
+    updateStudent: (data: any) => {},
 });
 
 export default GlobalContext;

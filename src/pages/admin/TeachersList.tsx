@@ -31,6 +31,7 @@ import {TeacherDataForm, TeachersDataFileForm} from "../../components/form/teach
 import {useContext, useEffect, useState} from "react";
 import {DeleteDialog} from "../../components/dialog/delete-dialog.ts";
 import GlobalContext from "../../context/GlobalContext";
+import {makeArrayWithIds} from "../../lib/helper";
 
 export const columns: ColumnDef<Teacher>[] = [
     {
@@ -100,8 +101,7 @@ export const columns: ColumnDef<Teacher>[] = [
                             <DialogTrigger>
                                 <DropdownMenuLabel>Видалити</DropdownMenuLabel>
                             </DialogTrigger>
-                            <DeleteDialog list={[row.original.id.toString()]} header={dialogOptions.deleteData.header} button={dialogOptions.deleteData.button}>
-                            </DeleteDialog>
+                            <DeleteTeacherDialog list={[row.original.id.toString()]} />
                         </Dialog>
                     </DropdownMenuContent>
                 </DropdownMenu>
@@ -161,7 +161,7 @@ export function TeachersList() {
                 </DialogWrapper>
             </Dialog>
 
-            <DateTable table={table} columns={columns} />
+            <DateTable table={table} columns={columns} dialog={<DeleteTeacherDialog list={makeArrayWithIds(table.getFilteredSelectedRowModel().rows)} />} />
         </PageWrapper>
     )
 }
@@ -176,5 +176,14 @@ const TeacherModal = () => {
             <TabsContent value="many"><TeachersDataFileForm /></TabsContent>
             <TabsContent value="single"><TeacherDataForm editOption={null}/></TabsContent>
         </Tabs>
+    )
+}
+
+const DeleteTeacherDialog = ({list}: {list: any}) => {
+    const { deleteTeachersList } = useContext(GlobalContext);
+
+    return (
+        <DeleteDialog handleFunction={deleteTeachersList} list={list}  header={dialogOptions.deleteData.header} button={dialogOptions.deleteData.button}>
+        </DeleteDialog>
     )
 }

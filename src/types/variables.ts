@@ -16,6 +16,7 @@ export interface DialogOptionType {
     button?: string
     children?: ReactNode
     list?: [string]
+    handleFunction?: (list: any) => void
 }
 
 export type BadgeOptionType = {

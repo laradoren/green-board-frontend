@@ -15,55 +15,26 @@ import {
 import { ArrowUpDown, MoreHorizontal } from "lucide-react"
 import {
     Button,
-    Checkbox,
+    Checkbox, Dialog, DialogTrigger,
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuSeparator,
-    DropdownMenuTrigger,
+    DropdownMenuTrigger, Input, Tabs, TabsContent, TabsList, TabsTrigger,
 } from "../../components/ui"
 import {PageWrapper} from "../../components/wrapper/page-wrapper";
 import {Teacher} from "../../types";
 import {DateTable} from "../../components/table";
-
-// const data: Teacher[] = [
-//     {
-//         id: "m5gr84i9",
-//         name: "Аліна",
-//         surname: "Галушко",
-//         lastname: "Василівна",
-//         email: "ken99@yahoo.com",
-//     },
-//     {
-//         id: "3u1reuv4",
-//         name: "Дарина",
-//         surname: "Проботюк",
-//         lastname: "Андріївна",
-//         email: "Abe45@gmail.com",
-//     },
-//     {
-//         id: "derv1ws0",
-//         name: "Анатолій",
-//         surname: "Проботюк",
-//         lastname: "Степанович",
-//         email: "Monserrat44@gmail.com",
-//     },
-//     {
-//         id: "5kma53ae",
-//         name: "Оксана",
-//         surname: "Кузло",
-//         lastname: "Сергіївна",
-//         email: "Silas22@gmail.com",
-//     },
-//     {
-//         id: "bhqecj4p",
-//         name: "Бляяя",
-//         surname: "Муха",
-//         lastname: "да",
-//         email: "carmella@hotmail.com",
-//     },
-// ]
+import {DialogWrapper} from "../../components/wrapper/dialog-wrapper";
+import {dialogOptions} from "../../lib";
+import {TeacherDataForm, TeachersDataFileForm} from "../../components/form/teacher-form";
+import {DeleteDialog} from "../../components/dialog/delete-dialog.ts";
+import {useContext} from "react";
+import GlobalContext from "../../context/GlobalContext";
+import {GroupForm} from "../../components/form";
+import {makeArrayWithIds} from "../../lib/helper";
+import {StudentDataDataForm} from "../../components/form/student-form";
 
 export const columns: ColumnDef<Teacher>[] = [
     {
@@ -86,26 +57,13 @@ export const columns: ColumnDef<Teacher>[] = [
         enableHiding: false,
     },
     {
-        accessorKey: "name",
-        header: "Ім'я",
+        accessorKey: "fullname",
+        header: "Повне ім'я",
         cell: ({ row }: {row: any}) => (
-            <div className="capitalize">{row.getValue("name")}</div>
+            <div className="capitalize">{row.getValue("fullname")}</div>
         ),
     },
-    {
-        accessorKey: "surname",
-        header: "Прізвище",
-        cell: ({ row }: {row: any}) => (
-            <div className="capitalize">{row.getValue("surname")}</div>
-        ),
-    },
-    {
-        accessorKey: "lastname",
-        header: "По-батькові",
-        cell: ({ row }: {row: any}) => (
-            <div className="capitalize">{row.getValue("lastname")}</div>
-        ),
-    },
+
     {
         accessorKey: "email",
         header: ({ column }: {column: any}) => {
@@ -122,6 +80,13 @@ export const columns: ColumnDef<Teacher>[] = [
         cell: ({ row }: {row:any}) => <div className="lowercase">{row.getValue("email")}</div>,
     },
     {
+        accessorKey: "group",
+        header: "Код групи",
+        cell: ({ row }: {row: any}) => (
+            <div className="capitalize">{row.getValue("group")}</div>
+        ),
+    },
+    {
         id: "actions",
         enableHiding: false,
         cell: ({ row }: {row: any}) => {
@@ -134,10 +99,21 @@ export const columns: ColumnDef<Teacher>[] = [
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                        <Dialog>
+                            <DialogTrigger>
+                                <DropdownMenuLabel>Змінити</DropdownMenuLabel>
+                            </DialogTrigger>
+                            <DialogWrapper header={dialogOptions.updateStudent.header} button={dialogOptions.updateStudent.button}>
+                                <StudentDataDataForm editOption={row.original} />
+                            </DialogWrapper>
+                        </Dialog>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>View customer</DropdownMenuItem>
-                        <DropdownMenuItem>View payment details</DropdownMenuItem>
+                        <Dialog>
+                            <DialogTrigger>
+                                <DropdownMenuLabel>Видалити</DropdownMenuLabel>
+                            </DialogTrigger>
+                            <DeleteStudentDialog list={[row.original.id.toString()]} />
+                        </Dialog>
                     </DropdownMenuContent>
                 </DropdownMenu>
             )
@@ -146,6 +122,8 @@ export const columns: ColumnDef<Teacher>[] = [
 ]
 
 export function GroupList() {
+    const {allStudents} = useContext(GlobalContext);
+
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
         []
@@ -155,7 +133,7 @@ export function GroupList() {
     const [rowSelection, setRowSelection] = React.useState({})
 
     const table = useReactTable({
-        data: [],
+        data: allStudents,
         columns,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
@@ -175,17 +153,45 @@ export function GroupList() {
 
     return (
         <PageWrapper className="w-full" title={"Список груп"}>
-            <Button
-                size="lg"
-            >
-                Створити групу
-            </Button>
-            <Button
-                size="lg"
-            >
-                Додати студента
-            </Button>
-            <DateTable table={table} columns={columns} />
+            <Dialog>
+                <DialogTrigger>
+                    <Button
+                        size="lg"
+                    >
+                        Створити групу
+                    </Button>
+                </DialogTrigger>
+                <DialogWrapper header={dialogOptions.createGroup.header} button={dialogOptions.createGroup.button}>
+                    <GroupForm/>
+                </DialogWrapper>
+            </Dialog>
+
+            <DateTable table={table} columns={columns}
+                       dialog={<DeleteStudentDialog list={makeArrayWithIds(table.getFilteredSelectedRowModel().rows)}  />}
+                       search={<SearchByGroup table={table} />}
+            />
         </PageWrapper>
+    )
+}
+
+const DeleteStudentDialog = ({list}: {list: any}) => {
+    const { deleteStudentsList } = useContext(GlobalContext);
+
+    return (
+        <DeleteDialog handleFunction={deleteStudentsList} list={list} header={dialogOptions.deleteData.header} button={dialogOptions.deleteData.button}>
+        </DeleteDialog>
+    )
+}
+
+const SearchByGroup = ({table}: {table: any}) => {
+    return (
+        <Input
+            placeholder="Шукати за групою"
+            value={(table.getColumn("group")?.getFilterValue() as string) ?? ""}
+            onChange={(event) =>
+                table.getColumn("group")?.setFilterValue(event.target.value)
+            }
+            className="max-w-sm ml-5"
+        />
     )
 }

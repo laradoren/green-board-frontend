@@ -2,36 +2,29 @@ import { useEffect, useReducer, useState } from "react";
 import GlobalContext from "./GlobalContext";
 import {isUserType, IUser, IUserData} from "../types";
 import {useMutation, useQuery} from "@apollo/client";
-import {CREATE_TEACHERS_LIST, CREATE_USER, DELETE_TEACHERS_LIST, GET_ALL_TEACHERS, UPDATE_TEACHER} from "../api";
-import {parseBackendTeacherData} from "../lib/helper";
+import {
+    CREATE_GROUP,
+    CREATE_TEACHERS_LIST,
+    CREATE_USER, DELETE_STUDENTS_LIST,
+    DELETE_TEACHERS_LIST,
+    GET_ALL_STUDENTS,
+    GET_ALL_TEACHERS, UPDATE_STUDENT,
+    UPDATE_TEACHER
+} from "../api";
+import {allStudentsReducer, allTeachersReducer} from "./reducers";
 
-const allTeachersReducer = ( state: any, { type, payload }: any) => {
-        const newState = [ ...state ];
-        switch (type) {
-            case "create":
-                return [...newState, parseBackendTeacherData([payload])[0]];
-            case "file":
-                return [...newState, ...parseBackendTeacherData(payload)];
-            case "update":
-                const updatedItem = parseBackendTeacherData([payload])[0];
-                return newState.map((item: any) =>
-                    item.id === updatedItem.id ? updatedItem : item
-                );
-            case "delete":
-                const deletedIds = payload.map((item: any) => item._id);
-                return newState.filter((item: any) => !deletedIds.includes(item.id));
-            case "set":
-                return parseBackendTeacherData(payload);
-            default:
-                throw new Error("Unknow type for TeacherReducer");
-        }
-}
 const ContextWrapper = ({ children }: any) => {
     const {data: allTeachersData} = useQuery(GET_ALL_TEACHERS);
+    const {data: allStudentsData} = useQuery(GET_ALL_STUDENTS);
+
     const [createSingleTeacher] = useMutation(CREATE_USER);
     const [deleteTeachersList] = useMutation(DELETE_TEACHERS_LIST);
     const [createTeachersList] = useMutation(CREATE_TEACHERS_LIST);
     const [updateTeacher] = useMutation(UPDATE_TEACHER);
+
+    const [deleteStudentsList] = useMutation(DELETE_STUDENTS_LIST);
+    const [createGroup] = useMutation(CREATE_GROUP);
+    const [updateStudent] = useMutation(UPDATE_STUDENT);
 
     const [allTeachers, dispatchCallTeachers] = useReducer(
         allTeachersReducer,
@@ -39,11 +32,20 @@ const ContextWrapper = ({ children }: any) => {
         allTeachersData
     );
 
+    const [allStudents, dispatchCallStudents] = useReducer(
+        allStudentsReducer,
+        [],
+        allStudentsData
+    );
+
     useEffect(() => {
         if(allTeachersData) {
             dispatchCallTeachers({type: "set", payload: allTeachersData.allTeachers});
         }
-    }, [allTeachersData]);
+        if(allStudentsData) {
+            dispatchCallStudents({type: "set", payload: allStudentsData.allStudents});
+        }
+    }, [allTeachersData, allStudentsData]);
     const [currentUser, setCurrentUser] = useState<IUserData>({
         data: {
             role: "",
@@ -87,17 +89,35 @@ const ContextWrapper = ({ children }: any) => {
             dispatchCallTeachers({type: "update", payload: result.data.updateTeacher});
         });
 
+    const createGroupAction = (code: string, students: any) => createGroup({variables: {newGroup:{code, students}}})
+        .then((result) => {
+            dispatchCallStudents({type: "file", payload: result.data.createGroup});
+        });
+
+    const deleteStudentsListAction = (list: any) => deleteStudentsList({variables: {list}})
+        .then((result) => {
+            dispatchCallStudents({type: "delete", payload: result.data.deleteStudentsList});
+        });
+
+    const updateStudentAction = (data: any) => updateStudent({variables: {...data}})
+        .then((result) => {
+            dispatchCallStudents({type: "update", payload: result.data.updateStudent});
+        });
+
   return (
     <GlobalContext.Provider
       value={{
           currentUser,
           setCurrentUser,
           allTeachers,
-          dispatchCallTeachers,
+          allStudents,
           createSingleTeacher: createSingleTeacherAction,
           deleteTeachersList: deleteTeachersListAction,
           createTeachersList: createTeachersListAction,
-          updateTeachersList: updateTeachersListAction
+          updateTeachersList: updateTeachersListAction,
+          createGroup: createGroupAction,
+          deleteStudentsList: deleteStudentsListAction,
+          updateStudent: updateStudentAction,
       }}
     >
       {children}

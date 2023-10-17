@@ -1,7 +1,11 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle, Button } from "../../components/ui";
 import { RegisterForm } from "../../components/form/register-form";
+import {useContext} from "react";
+import GlobalContext from "../../context/GlobalContext";
 
 export const RegisterPage = () => {
+    const { setLoginState } = useContext(GlobalContext);
+
     return (
         <div className="flex min-h-full flex-col justify-center px-6 py-6 lg:px-8">
             <Card className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -15,8 +19,11 @@ export const RegisterPage = () => {
                     <RegisterForm />
                 </CardContent>
                 <CardFooter>
-                    <Button className="flex h-10 w-full" type="submit">Створити профіль</Button>
+                    <CardFooter>
+                        <div onClick={() => setLoginState(true)} className={"w-full text-center underline cursor-pointer text-sm"}>Вже зареєстровані? </div>
+                    </CardFooter>
                 </CardFooter>
+
             </Card>
         </div>
     );

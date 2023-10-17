@@ -1,8 +1,8 @@
 import {excelType} from "./variables";
 import * as XLSX from "xlsx";
-import {ITeacherData} from "../types";
+import {IUserExelData} from "../types";
 
-export const handleExcelFile = (file: File, setParsedData: (result:ITeacherData[]) => void) => {
+export const handleExcelFile = (file: File, setParsedData: (result:IUserExelData[]) => void) => {
     if(file && excelType.includes(file.type)) {
         let reader = new FileReader();
         reader.readAsArrayBuffer(file);
@@ -13,14 +13,14 @@ export const handleExcelFile = (file: File, setParsedData: (result:ITeacherData[
                 const sheetName = workbook.SheetNames[0];
                 const sheet = workbook.Sheets[sheetName];
                 const parsedData = XLSX.utils.sheet_to_json(sheet);
-                setParsedData(parseDataToTeacherType(parsedData));
+                setParsedData(parseDataToUserInfoType(parsedData));
             }
         };
     }
 }
 
-const parseDataToTeacherType = (data:any) => {
-    const parsedData:ITeacherData[] = data.map((d: any) => ({email: d.email, fullname: d.fullname}));
+const parseDataToUserInfoType = (data:any) => {
+    const parsedData:IUserExelData[] = data.map((d: any) => ({email: d.email, fullname: d.fullname}));
     return parsedData;
 }
 
@@ -28,4 +28,7 @@ export const makeArrayWithIds = (data: any) => {
     return data.map(((item:any) => (item.original.id)));
 }
 
-export const parseBackendTeacherData = (data: any) => data.map(((item:any) => ({id: item._id, fullname: item.user.fullname, email: item.user.email})));
+export const parseBackendTeacherData = (data: any) =>
+    data.map(((item:any) => ({id: item._id, fullname: item.user.fullname, email: item.user.email})));
+export const parseBackendStudentData = (data: any) =>
+    data.map(((item:any) => ({id: item._id, fullname: item.user.fullname, email: item.user.email, group: item.group})));

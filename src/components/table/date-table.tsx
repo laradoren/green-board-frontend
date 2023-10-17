@@ -17,11 +17,8 @@ import {flexRender} from "@tanstack/react-table";
 import * as React from "react";
 import {ChevronDown} from "lucide-react";
 import {BsFillTrashFill} from "react-icons/bs";
-import {DeleteDialog} from "../dialog/delete-dialog.ts";
-import {dialogOptions} from "../../lib";
-import {makeArrayWithIds} from "../../lib/helper";
 
-export const DateTable = ({table, columns}: {table:any, columns:any}) => {
+export const DateTable = ({table, columns, dialog, search}: {table:any, columns:any, dialog: any, search?: any}) => {
     return (
         <>
             <div className="flex items-center justify-between py-4">
@@ -33,6 +30,7 @@ export const DateTable = ({table, columns}: {table:any, columns:any}) => {
                     }
                     className="max-w-sm"
                 />
+                {search}
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="outline" className="ml-auto">
@@ -70,8 +68,7 @@ export const DateTable = ({table, columns}: {table:any, columns:any}) => {
                             <BsFillTrashFill className="h-5 w-5" />
                         </Button>
                     </DialogTrigger>
-                    <DeleteDialog list={makeArrayWithIds(table.getFilteredSelectedRowModel().rows)}  header={dialogOptions.deleteData.header} button={dialogOptions.deleteData.button}>
-                    </DeleteDialog>
+                    {dialog}
                 </Dialog>
             </div>
             <div className="rounded-md border">

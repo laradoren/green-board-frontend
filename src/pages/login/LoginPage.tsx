@@ -1,7 +1,10 @@
 import { LoginForm } from "../../components/form";
-import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui";
+import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "../../components/ui";
 import { BiSolidLeaf } from "react-icons/bi";
+import {useContext} from "react";
+import GlobalContext from "../../context/GlobalContext";
 export const LoginPage = () => {
+    const { setLoginState } = useContext(GlobalContext);
     return (
         <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
             <Card className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
@@ -15,6 +18,9 @@ export const LoginPage = () => {
                 <CardContent>
                     <LoginForm />
                 </CardContent>
+                <CardFooter>
+                    <div onClick={() => setLoginState(false)} className={"w-full text-center underline cursor-pointer text-sm"}>Перший раз у системі? </div>
+                </CardFooter>
             </Card>
         </div>
     );

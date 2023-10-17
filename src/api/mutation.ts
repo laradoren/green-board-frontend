@@ -40,3 +40,35 @@ export const DELETE_TEACHERS_LIST = gql`
         }
     }
 `
+
+export const CREATE_GROUP = gql`
+    mutation CreateGroup($newGroup: GroupInput) {
+        createGroup(newGroup: $newGroup) {
+            _id
+            group
+            user {
+                fullname email
+            }
+        }
+    }
+`
+
+export const UPDATE_STUDENT = gql`
+    mutation UpdateStudent($id: ID!, $fullname: String!, $email: String!) {
+        updateStudent(id: $id, fullname: $fullname, email: $email) {
+            _id
+            group
+            user {
+                fullname email
+            }
+        }
+    }
+`
+
+export const DELETE_STUDENTS_LIST = gql`
+    mutation DeleteStudentsList($list: [ID!]) {
+        deleteStudentsList(list: $list) {
+            _id
+        }
+    }
+`

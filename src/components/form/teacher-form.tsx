@@ -16,9 +16,9 @@ import {
 import { useForm } from "react-hook-form";
 import * as React from "react";
 import {handleExcelFile} from "../../lib/helper";
-import {ITeacherData} from "../../types";
 import {useContext} from "react";
 import GlobalContext from "../../context/GlobalContext";
+import {IUserExelData} from "../../types";
 
 const teacherSchema = z.object({
     fullname: z.string().min(2).max(100),
@@ -96,7 +96,7 @@ export const TeachersDataFileForm = () => {
     });
 
     function onSubmit(values: z.infer<typeof teachersDataSchema>) {
-        handleExcelFile(values.file, (result: ITeacherData[]) => {
+        handleExcelFile(values.file, (result: IUserExelData[]) => {
             createTeachersList(result);
         });
     }

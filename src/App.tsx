@@ -1,7 +1,7 @@
 import './App.css';
 import './globals.css'
 import {Route, Routes, Navigate} from "react-router-dom";
-import {LoginPage, NavigationBar, SubjectList, TeachersList} from "./pages";
+import {LoginPage, NavigationBar, RegisterPage, SubjectList, TeachersList} from "./pages";
 import {Card} from "./components/ui";
 import {HometaskList} from "./pages/teacher/HometaskList";
 import {StudyList} from "./pages/teacher/StudyList";
@@ -13,7 +13,6 @@ import GlobalContext from "./context/GlobalContext";
 
 function App() {
     const { currentUser } = useContext(GlobalContext);
-
     return (
       <div className="main-page bg-accent relative flex min-h-screen flex-col">
           {currentUser.token ?

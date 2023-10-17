@@ -21,3 +21,16 @@ export const GET_ALL_TEACHERS = gql`
         }
     }
 `
+
+export const GET_ALL_STUDENTS = gql`
+    query GetAllStudents {
+        allStudents {
+            _id 
+            group
+            user {
+                fullname
+                email
+            }
+        }
+    }
+`

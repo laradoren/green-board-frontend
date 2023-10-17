@@ -4,6 +4,12 @@ export type Teacher = {
     email: string
 }
 
+export type StudentInfo = {
+    id: string
+    fullname: string
+    email: string
+}
+
 export type Subject = {
     id: string
     title: string
@@ -59,7 +65,7 @@ export function isUserType(o: any): o is IUser {
 }
 
 
-export interface ITeacherData {
+export interface IUserExelData {
     fullname: string
     email: string
 }
@@ -67,12 +73,15 @@ export interface ITeacherData {
 export interface IGlobalContext {
     currentUser: IUserData
     setCurrentUser: (data: IUserData) => void
-    dispatchCallTeachers: ({type, payload}: IDispatchCallTeachersProps) => void;
     allTeachers: Teacher[],
     createSingleTeacher: (data: any) => void
     deleteTeachersList: (list: any) => void
     createTeachersList: (list: any) => void
-    updateTeachersList: (list: any) => void
+    updateTeachersList: (data: any) => void
+    allStudents: StudentInfo[],
+    createGroup: (code: string, students: any) => void
+    deleteStudentsList: (list: any) => void
+    updateStudent: (data: any) => void
 }
 
 export interface IDispatchCallTeachersProps {

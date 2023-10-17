@@ -74,7 +74,13 @@ export const dialogOptions:DialogOptionsType = {
     deleteData: {
         header: "Ви справді хочете видалити ці дані?",
         button: "Видалити"
-    }
+    },
+    createGroup: {
+        header: "Створення нової групи",
+    },
+    updateStudent: {
+        header: "Внесення змін в дані студента",
+    },
 }
 
 export const excelType: String[] = [

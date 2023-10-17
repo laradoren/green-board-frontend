@@ -183,7 +183,7 @@ export function HometaskList() {
                     <SelectItem value="subject3">Дисципліна</SelectItem>
                 </SelectContent>
             </Select>
-            <DateTable table={table} columns={columns} />
+            {/*<DateTable table={table} columns={columns} />*/}
         </PageWrapper>
     )
 }
