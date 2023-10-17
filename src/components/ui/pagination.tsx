@@ -1,10 +1,7 @@
-
 import { Table } from "@tanstack/react-table"
-
 import {Button} from "./button";
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "./select";
 import {RxDoubleArrowLeft, RxDoubleArrowRight} from "react-icons/rx";
-import {BsChevronLeft, BsChevronRight, BsFillTrashFill} from "react-icons/bs";
+import {BsChevronLeft, BsChevronRight} from "react-icons/bs";
 
 interface DataTablePaginationProps<TData> {
     table: Table<TData>

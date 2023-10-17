@@ -17,8 +17,8 @@ import { useForm } from "react-hook-form";
 import * as React from "react";
 import {handleExcelFile} from "../../lib/helper";
 import {ITeacherData} from "../../types";
-import {useMutation} from "@apollo/client";
-import {UPDATE_TEACHER} from "../../api";
+import {useContext} from "react";
+import GlobalContext from "../../context/GlobalContext";
 
 const teacherSchema = z.object({
     fullname: z.string().min(2).max(100),
@@ -29,8 +29,9 @@ const teachersDataSchema = z.object({
     file: z.custom<File>()
 });
 
-export const TeacherDataForm = ({handleSubmitTeacherForm, editOption}: {handleSubmitTeacherForm: any, editOption: any}) => {
-    const [updateTeacher, {data, loading, error}] = useMutation(UPDATE_TEACHER);
+export const TeacherDataForm = ({editOption}: {editOption: any}) => {
+    const { createSingleTeacher, updateTeachersList } = useContext(GlobalContext);
+
     const form = useForm<z.infer<typeof teacherSchema>>({
         resolver: zodResolver(teacherSchema),
         defaultValues: {
@@ -40,10 +41,10 @@ export const TeacherDataForm = ({handleSubmitTeacherForm, editOption}: {handleSu
     })
 
     function onSubmit(values: z.infer<typeof teacherSchema>) {
-        if(handleSubmitTeacherForm) {
-            handleSubmitTeacherForm({ variables: {newUser: {role: "teacher", ...values}}});
+        if(editOption) {
+            updateTeachersList({...values, id: editOption.id});
         } else {
-            updateTeacher({variables: {...values, id: editOption.id}});
+            createSingleTeacher({role: "teacher", ...values});
         }
     }
 
@@ -85,7 +86,9 @@ export const TeacherDataForm = ({handleSubmitTeacherForm, editOption}: {handleSu
     )
 };
 
-export const TeachersDataFileForm = ({createTeachersList}: {createTeachersList: ({}) => {}}) => {
+export const TeachersDataFileForm = () => {
+    const { createTeachersList } = useContext(GlobalContext);
+
     const form = useForm<z.infer<typeof teachersDataSchema>>({
         resolver: zodResolver(teachersDataSchema), defaultValues: {
             file: new File([], "")
@@ -94,7 +97,7 @@ export const TeachersDataFileForm = ({createTeachersList}: {createTeachersList: 
 
     function onSubmit(values: z.infer<typeof teachersDataSchema>) {
         handleExcelFile(values.file, (result: ITeacherData[]) => {
-            createTeachersList({variables: {list: result}});
+            createTeachersList(result);
         });
     }
 

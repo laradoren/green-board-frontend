@@ -15,8 +15,7 @@ export interface DialogOptionType {
     header: string
     button?: string
     children?: ReactNode
-    id?: string
-    list?: []
+    list?: [string]
 }
 
 export type BadgeOptionType = {

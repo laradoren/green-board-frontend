@@ -8,21 +8,14 @@ import {
 } from "../ui";
 import * as React from "react";
 import {DialogOptionType} from "../../types";
-import {useMutation} from "@apollo/client";
-import {DELETE_TEACHER, DELETE_TEACHERS_LIST} from "../../api";
+import {useContext} from "react";
+import GlobalContext from "../../context/GlobalContext";
 
-export const DeleteDialog = ({header, button, id, list}: DialogOptionType) => {
-    const [deleteTeacher] = useMutation(DELETE_TEACHER);
-    const [deleteTeachersList] = useMutation(DELETE_TEACHERS_LIST);
-
+export const DeleteDialog = ({header, button, list}: DialogOptionType) => {
+    const { deleteTeachersList } = useContext(GlobalContext);
 
     const onDeleteClick = () => {
-        if(id) {
-            deleteTeacher({variables: {id}})
-        }
-        if(list?.length) {
-            deleteTeachersList({variables: {list: list}});
-        }
+        deleteTeachersList(list);
     }
 
     return (

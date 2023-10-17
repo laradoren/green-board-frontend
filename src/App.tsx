@@ -6,38 +6,15 @@ import {Card} from "./components/ui";
 import {HometaskList} from "./pages/teacher/HometaskList";
 import {StudyList} from "./pages/teacher/StudyList";
 import {GroupList} from "./pages/admin/GroupList";
-import {useEffect, useState} from "react";
+import {useContext} from "react";
 import {LogoutPage} from "./pages/login/LogoutPage";
-import {isUserType, IUser, IUserData} from "./types";
+import GlobalContext from "./context/GlobalContext";
 
 
 function App() {
-    const [currentUser, setCurrentUser] = useState<IUserData>({
-        data: {
-            role: "",
-            fullname: "",
-            email: ""
-        },
-        token: ""
-    });
+    const { currentUser } = useContext(GlobalContext);
 
-    useEffect(() => {
-        if(currentUser.token && Object.keys(currentUser.data)) return;
-        const token = localStorage.getItem("token");
-        const data = localStorage.getItem("data");
-        let parsedData:IUser;
-        if(token && data && isUserType(JSON.parse(data))) {
-            parsedData = JSON.parse(data);
-            setCurrentUser({
-                token, data: {
-                    role: parsedData.role,
-                    fullname: parsedData.fullname,
-                    email: parsedData.email
-                }
-            })
-        }
-    }, [currentUser])
-  return (
+    return (
       <div className="main-page bg-accent relative flex min-h-screen flex-col">
           {currentUser.token ?
               <>
@@ -49,12 +26,12 @@ function App() {
                           <Route path={"subject/list"} element={<SubjectList />} />
                           <Route path={"hometask/list"} element={<HometaskList />} />
                           <Route path={"study/list"} element={<StudyList />} />
-                          <Route path={"logout"} element={<LogoutPage setCurrentUser={setCurrentUser} />} />
+                          <Route path={"logout"} element={<LogoutPage />} />
                       </Routes>
                   </Card>
                   <NavigationBar currentRole={"admin"} />
               </>
-              : <LoginPage setCurrentUser={setCurrentUser} />
+              : <LoginPage />
           }
 
       </div>

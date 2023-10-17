@@ -11,7 +11,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-    DataTablePagination, Dialog, DialogTrigger, DropdownMenuLabel
+    DataTablePagination, Dialog, DialogTrigger
 } from "../ui";
 import {flexRender} from "@tanstack/react-table";
 import * as React from "react";

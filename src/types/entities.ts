@@ -63,3 +63,19 @@ export interface ITeacherData {
     fullname: string
     email: string
 }
+
+export interface IGlobalContext {
+    currentUser: IUserData
+    setCurrentUser: (data: IUserData) => void
+    dispatchCallTeachers: ({type, payload}: IDispatchCallTeachersProps) => void;
+    allTeachers: Teacher[],
+    createSingleTeacher: (data: any) => void
+    deleteTeachersList: (list: any) => void
+    createTeachersList: (list: any) => void
+    updateTeachersList: (list: any) => void
+}
+
+export interface IDispatchCallTeachersProps {
+    type: string,
+    payload: any
+}

@@ -1,10 +1,10 @@
 import {
     NavigationMenu,
     NavigationMenuItem, NavigationMenuLink,
-    NavigationMenuList, navigationMenuTriggerStyle
+    NavigationMenuList
 } from "../components/ui";
 import {NavLink} from "react-router-dom";
-import {navigationOptions} from "../lib/variables";
+import {navigationOptions} from "../lib";
 import {NavigationOptionType} from "../types";
 
 export const NavigationBar = ({currentRole}: {currentRole:string}) => {

@@ -1,9 +1,11 @@
 import { Button } from "../../components/ui";
 import { BiSolidLeaf } from "react-icons/bi";
 import * as React from "react";
-import {Dispatch, SetStateAction} from "react";
-import {IUserData} from "../../types";
-export const LogoutPage = ({setCurrentUser}: {setCurrentUser: Dispatch<SetStateAction<IUserData>>}) => {
+import {useContext} from "react";
+import GlobalContext from "../../context/GlobalContext";
+export const LogoutPage = () => {
+    const { setCurrentUser } = useContext(GlobalContext);
+
     const logout = () => {
         localStorage.clear();
         setCurrentUser({

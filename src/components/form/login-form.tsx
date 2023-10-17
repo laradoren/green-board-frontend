@@ -14,9 +14,9 @@ import {
 } from "../ui"
 import { useForm } from "react-hook-form";
 import { useLazyQuery } from "@apollo/client";
-import {Dispatch, SetStateAction} from "react";
-import {IUserData} from "../../types";
+import {useContext} from "react";
 import {LOGIN_USER} from "../../api";
+import GlobalContext from "../../context/GlobalContext";
 
 
 
@@ -25,7 +25,9 @@ const loginSchema = z.object({
     password: z.string().min(5).max(20),
 });
 
-export const LoginForm = ({setCurrentUser}: {setCurrentUser: Dispatch<SetStateAction<IUserData>>}) => {
+export const LoginForm = () => {
+    const { setCurrentUser } = useContext(GlobalContext);
+
     const [loginUser, {loading}] = useLazyQuery(LOGIN_USER, {
         onError: error=> console.error(error),
         onCompleted: (data) => {

@@ -4,6 +4,9 @@ export const CREATE_TEACHERS_LIST = gql`
     mutation CreateTeachersList($list: [TeacherItem!]) {
         createTeachersList(list: $list) {
             _id
+            user {
+                fullname email
+            }
         }
     }
 `
@@ -11,7 +14,10 @@ export const CREATE_TEACHERS_LIST = gql`
 export const CREATE_USER = gql`
     mutation CreateUser($newUser: UserInput) {
         createUser(newUser: $newUser) {
-            _id
+            _id 
+            user {
+                fullname email
+            }       
         }
     }
 `
@@ -21,16 +27,8 @@ export const UPDATE_TEACHER = gql`
         updateTeacher(id: $id, fullname: $fullname, email: $email) {
             _id
             user {
-                fullname
+                fullname email
             }
-        }
-    }
-`
-
-export const DELETE_TEACHER = gql`
-    mutation DeleteTeacher($id: ID!) {
-        deleteTeacher(id: $id) {
-            _id 
         }
     }
 `

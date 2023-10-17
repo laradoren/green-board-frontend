@@ -27,3 +27,5 @@ const parseDataToTeacherType = (data:any) => {
 export const makeArrayWithIds = (data: any) => {
     return data.map(((item:any) => (item.original.id)));
 }
+
+export const parseBackendTeacherData = (data: any) => data.map(((item:any) => ({id: item._id, fullname: item.user.fullname, email: item.user.email})));
