@@ -64,5 +64,20 @@ export const dialogOptions:DialogOptionsType = {
     deleteTask: {
         header: "Ви справді хочете видалити це завдання?",
         button: "Видалити"
+    },
+    addTeachers: {
+        header: "Завантаження даних викладачів",
+    },
+    updateTeachers: {
+        header: "Внесення змін в дані викладача",
+    },
+    deleteData: {
+        header: "Ви справді хочете видалити ці дані?",
+        button: "Видалити"
     }
 }
+
+export const excelType: String[] = [
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "application/vnd.ms-excel"
+]

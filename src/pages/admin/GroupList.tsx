@@ -27,43 +27,43 @@ import {PageWrapper} from "../../components/wrapper/page-wrapper";
 import {Teacher} from "../../types";
 import {DateTable} from "../../components/table";
 
-const data: Teacher[] = [
-    {
-        id: "m5gr84i9",
-        name: "Аліна",
-        surname: "Галушко",
-        lastname: "Василівна",
-        email: "ken99@yahoo.com",
-    },
-    {
-        id: "3u1reuv4",
-        name: "Дарина",
-        surname: "Проботюк",
-        lastname: "Андріївна",
-        email: "Abe45@gmail.com",
-    },
-    {
-        id: "derv1ws0",
-        name: "Анатолій",
-        surname: "Проботюк",
-        lastname: "Степанович",
-        email: "Monserrat44@gmail.com",
-    },
-    {
-        id: "5kma53ae",
-        name: "Оксана",
-        surname: "Кузло",
-        lastname: "Сергіївна",
-        email: "Silas22@gmail.com",
-    },
-    {
-        id: "bhqecj4p",
-        name: "Бляяя",
-        surname: "Муха",
-        lastname: "да",
-        email: "carmella@hotmail.com",
-    },
-]
+// const data: Teacher[] = [
+//     {
+//         id: "m5gr84i9",
+//         name: "Аліна",
+//         surname: "Галушко",
+//         lastname: "Василівна",
+//         email: "ken99@yahoo.com",
+//     },
+//     {
+//         id: "3u1reuv4",
+//         name: "Дарина",
+//         surname: "Проботюк",
+//         lastname: "Андріївна",
+//         email: "Abe45@gmail.com",
+//     },
+//     {
+//         id: "derv1ws0",
+//         name: "Анатолій",
+//         surname: "Проботюк",
+//         lastname: "Степанович",
+//         email: "Monserrat44@gmail.com",
+//     },
+//     {
+//         id: "5kma53ae",
+//         name: "Оксана",
+//         surname: "Кузло",
+//         lastname: "Сергіївна",
+//         email: "Silas22@gmail.com",
+//     },
+//     {
+//         id: "bhqecj4p",
+//         name: "Бляяя",
+//         surname: "Муха",
+//         lastname: "да",
+//         email: "carmella@hotmail.com",
+//     },
+// ]
 
 export const columns: ColumnDef<Teacher>[] = [
     {
@@ -155,7 +155,7 @@ export function GroupList() {
     const [rowSelection, setRowSelection] = React.useState({})
 
     const table = useReactTable({
-        data,
+        data: [],
         columns,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,

@@ -1,6 +1,8 @@
 import {
     Button,
-    DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent,
+    DropdownMenu,
+    DropdownMenuCheckboxItem,
+    DropdownMenuContent,
     DropdownMenuTrigger,
     Input,
     Table,
@@ -8,21 +10,26 @@ import {
     TableCell,
     TableHead,
     TableHeader,
-    TableRow
+    TableRow,
+    DataTablePagination, Dialog, DialogTrigger, DropdownMenuLabel
 } from "../ui";
 import {flexRender} from "@tanstack/react-table";
 import * as React from "react";
 import {ChevronDown} from "lucide-react";
+import {BsFillTrashFill} from "react-icons/bs";
+import {DeleteDialog} from "../dialog/delete-dialog.ts";
+import {dialogOptions} from "../../lib";
+import {makeArrayWithIds} from "../../lib/helper";
 
 export const DateTable = ({table, columns}: {table:any, columns:any}) => {
     return (
         <>
             <div className="flex items-center justify-between py-4">
                 <Input
-                    placeholder="Шукати за прізвищем"
-                    value={(table.getColumn("student")?.getFilterValue() as string) ?? ""}
+                    placeholder="Шукати за ім'ям"
+                    value={(table.getColumn("fullname")?.getFilterValue() as string) ?? ""}
                     onChange={(event) =>
-                        table.getColumn("student")?.setFilterValue(event.target.value)
+                        table.getColumn("fullname")?.setFilterValue(event.target.value)
                     }
                     className="max-w-sm"
                 />
@@ -52,6 +59,20 @@ export const DateTable = ({table, columns}: {table:any, columns:any}) => {
                             })}
                     </DropdownMenuContent>
                 </DropdownMenu>
+                <Dialog>
+                    <DialogTrigger>
+                        <Button
+                            variant="destructive"
+                            className="hidden h-10 w-10 p-0 lg:flex ml-5"
+                            disabled={!table.getFilteredSelectedRowModel().rows.length}
+                        >
+                            <span className="sr-only">Видалити</span>
+                            <BsFillTrashFill className="h-5 w-5" />
+                        </Button>
+                    </DialogTrigger>
+                    <DeleteDialog list={makeArrayWithIds(table.getFilteredSelectedRowModel().rows)}  header={dialogOptions.deleteData.header} button={dialogOptions.deleteData.button}>
+                    </DeleteDialog>
+                </Dialog>
             </div>
             <div className="rounded-md border">
                 <Table>
@@ -103,29 +124,8 @@ export const DateTable = ({table, columns}: {table:any, columns:any}) => {
                     </TableBody>
                 </Table>
             </div>
-            <div className="flex items-center justify-end space-x-2 py-4">
-                <div className="flex-1 text-sm text-muted-foreground">
-                    {table.getFilteredSelectedRowModel().rows.length} of{" "}
-                    {table.getFilteredRowModel().rows.length} row(s) selected.
-                </div>
-                <div className="space-x-2">
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => table.previousPage()}
-                        disabled={!table.getCanPreviousPage()}
-                    >
-                        Попередня
-                    </Button>
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => table.nextPage()}
-                        disabled={!table.getCanNextPage()}
-                    >
-                        Наступна
-                    </Button>
-                </div>
+            <div className="py-4">
+              <DataTablePagination table={table} />
             </div>
         </>
     )

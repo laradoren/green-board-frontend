@@ -1,8 +1,6 @@
 export type Teacher = {
     id: string
-    name: string
-    surname: string
-    lastname: string
+    fullname: string
     email: string
 }
 
@@ -58,4 +56,10 @@ export interface IUser {
 
 export function isUserType(o: any): o is IUser {
     return "role" in o && "fullname" in o && "email" in o;
+}
+
+
+export interface ITeacherData {
+    fullname: string
+    email: string
 }

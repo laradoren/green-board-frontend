@@ -13,19 +13,12 @@ import {
     Input
 } from "../ui"
 import { useForm } from "react-hook-form";
-import {gql, useLazyQuery, useMutation, useQuery} from "@apollo/client";
+import { useLazyQuery } from "@apollo/client";
 import {Dispatch, SetStateAction} from "react";
 import {IUserData} from "../../types";
+import {LOGIN_USER} from "../../api";
 
-const LOGIN_USER = gql`
-    query Login($email: String!, $password: String!) {
-       login(email: $email, password: $password) {
-           token user {
-                role fullname email
-            }
-       } 
-    }
-`
+
 
 const loginSchema = z.object({
     email: z.string().min(2).max(50),
@@ -38,7 +31,7 @@ export const LoginForm = ({setCurrentUser}: {setCurrentUser: Dispatch<SetStateAc
         onCompleted: (data) => {
             let {token, user} = data.login;
             setCurrentUser({ token, data: user });
-            localStorage.setItem("token", token);
+            localStorage.setItem("token", "Bearer " + token);
             localStorage.setItem("data", JSON.stringify(user));
         }
     });

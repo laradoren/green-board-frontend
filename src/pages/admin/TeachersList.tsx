@@ -6,72 +6,34 @@ import {
     ColumnFiltersState,
     SortingState,
     VisibilityState,
-    flexRender,
     getCoreRowModel,
     getFilteredRowModel,
     getPaginationRowModel,
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table"
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react"
+import { ArrowUpDown, MoreHorizontal } from "lucide-react"
 import {
     Button,
-    Checkbox,
+    Checkbox, Dialog, DialogTrigger,
     DropdownMenu,
-    DropdownMenuCheckboxItem,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuSeparator,
-    DropdownMenuTrigger,
-    Input,
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
+    DropdownMenuTrigger, Tabs, TabsContent, TabsList, TabsTrigger,
 } from "../../components/ui"
 import {PageWrapper} from "../../components/wrapper/page-wrapper";
 import {Teacher} from "../../types";
-
-const data: Teacher[] = [
-    {
-        id: "m5gr84i9",
-        name: "Аліна",
-        surname: "Галушко",
-        lastname: "Василівна",
-        email: "ken99@yahoo.com",
-    },
-    {
-        id: "3u1reuv4",
-        name: "Дарина",
-        surname: "Проботюк",
-        lastname: "Андріївна",
-        email: "Abe45@gmail.com",
-    },
-    {
-        id: "derv1ws0",
-        name: "Анатолій",
-        surname: "Проботюк",
-        lastname: "Степанович",
-        email: "Monserrat44@gmail.com",
-    },
-    {
-        id: "5kma53ae",
-        name: "Оксана",
-        surname: "Кузло",
-        lastname: "Сергіївна",
-        email: "Silas22@gmail.com",
-    },
-    {
-        id: "bhqecj4p",
-        name: "Бляяя",
-        surname: "Муха",
-        lastname: "да",
-        email: "carmella@hotmail.com",
-    },
-]
+import {DateTable} from "../../components/table";
+import {DialogWrapper} from "../../components/wrapper/dialog-wrapper";
+import {dialogOptions} from "../../lib";
+import {TeacherDataForm, TeachersDataFileForm} from "../../components/form/teacher-form";
+import {useEffect, useState} from "react";
+import { useMutation, useQuery } from "@apollo/client";
+import {CREATE_TEACHERS_LIST, CREATE_USER, GET_ALL_TEACHERS} from "../../api";
+import {TaskForm} from "../../components/form";
+import {DeleteDialog} from "../../components/dialog/delete-dialog.ts";
 
 export const columns: ColumnDef<Teacher>[] = [
     {
@@ -94,24 +56,10 @@ export const columns: ColumnDef<Teacher>[] = [
         enableHiding: false,
     },
     {
-        accessorKey: "name",
+        accessorKey: "fullname",
         header: "Ім'я",
         cell: ({ row }: {row: any}) => (
-            <div className="capitalize">{row.getValue("name")}</div>
-        ),
-    },
-    {
-        accessorKey: "surname",
-        header: "Прізвище",
-        cell: ({ row }: {row: any}) => (
-            <div className="capitalize">{row.getValue("surname")}</div>
-        ),
-    },
-    {
-        accessorKey: "lastname",
-        header: "По-батькові",
-        cell: ({ row }: {row: any}) => (
-            <div className="capitalize">{row.getValue("lastname")}</div>
+            <div className="capitalize">{row.getValue("fullname")}</div>
         ),
     },
     {
@@ -142,10 +90,22 @@ export const columns: ColumnDef<Teacher>[] = [
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                        <Dialog>
+                            <DialogTrigger>
+                                <DropdownMenuLabel>Змінити</DropdownMenuLabel>
+                            </DialogTrigger>
+                            <DialogWrapper header={dialogOptions.updateTeachers.header} button={dialogOptions.updateTeachers.button}>
+                                <TeacherDataForm handleSubmitTeacherForm={null} editOption={row.original} />
+                            </DialogWrapper>
+                        </Dialog>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>View customer</DropdownMenuItem>
-                        <DropdownMenuItem>View payment details</DropdownMenuItem>
+                        <Dialog>
+                            <DialogTrigger>
+                                <DropdownMenuLabel>Видалити</DropdownMenuLabel>
+                            </DialogTrigger>
+                            <DeleteDialog id={row.original.id} header={dialogOptions.deleteData.header} button={dialogOptions.deleteData.button}>
+                            </DeleteDialog>
+                        </Dialog>
                     </DropdownMenuContent>
                 </DropdownMenu>
             )
@@ -154,16 +114,17 @@ export const columns: ColumnDef<Teacher>[] = [
 ]
 
 export function TeachersList() {
-    const [sorting, setSorting] = React.useState<SortingState>([])
-    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    const [teachersList, setTeachersList] = useState<Teacher[]>([]);
+    const [sorting, setSorting] = useState<SortingState>([]);
+    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
         []
-    )
+    );
     const [columnVisibility, setColumnVisibility] =
-        React.useState<VisibilityState>({})
-    const [rowSelection, setRowSelection] = React.useState({})
+        useState<VisibilityState>({});
+    const [rowSelection, setRowSelection] = useState({});
 
     const table = useReactTable({
-        data,
+        data: teachersList,
         columns,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
@@ -179,126 +140,48 @@ export function TeachersList() {
             columnVisibility,
             rowSelection,
         },
-    })
+    });
+
+    const [createTeachersList, {data: fileData}] = useMutation(CREATE_TEACHERS_LIST);
+    const [createSingleTeacher, {data: singleData}] = useMutation(CREATE_USER);
+    const {data, loading, error} = useQuery(GET_ALL_TEACHERS);
+
+    useEffect(() => {
+        if(data) {
+            setTeachersList(data.allTeachers.map(((item:any) => ({id: item._id, fullname: item.user.fullname, email: item.user.email}))));
+            table.setPageSize(5);
+        }
+    }, [fileData, singleData, loading]);
 
     return (
         <PageWrapper className="w-full" title={"Списки викладачів"}>
-            <Button
-                size="lg"
-                onClick={() => table.previousPage()}
-            >
-                Запросити викладача
-            </Button>
-            <div className="flex items-center justify-between py-4">
-                <Input
-                    placeholder="Шукати за прізвищем"
-                    value={(table.getColumn("surname")?.getFilterValue() as string) ?? ""}
-                    onChange={(event) =>
-                        table.getColumn("surname")?.setFilterValue(event.target.value)
-                    }
-                    className="max-w-sm"
-                />
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="outline" className="ml-auto">
-                            Стовпці <ChevronDown className="ml-2 h-4 w-4" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        {table
-                            .getAllColumns()
-                            .filter((column:any) => column.getCanHide())
-                            .map((column:any) => {
-                                return (
-                                    <DropdownMenuCheckboxItem
-                                        key={column.id}
-                                        className="capitalize"
-                                        checked={column.getIsVisible()}
-                                        onCheckedChange={(value:any) =>
-                                            column.toggleVisibility(!!value)
-                                        }
-                                    >
-                                        {(typeof column.columnDef.header !== "string" ? "Пошта" : column.columnDef.header)}
-                                    </DropdownMenuCheckboxItem>
-                                )
-                            })}
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            </div>
-            <div className="rounded-md border">
-                <Table>
-                    <TableHeader>
-                        {table.getHeaderGroups().map((headerGroup:any) => (
-                            <TableRow key={headerGroup.id}>
-                                {headerGroup.headers.map((header:any) => {
-                                    return (
-                                        <TableHead key={header.id}>
-                                            {header.isPlaceholder
-                                                ? null
-                                                : flexRender(
-                                                    header.column.columnDef.header,
-                                                    header.getContext()
-                                                )}
-                                        </TableHead>
-                                    )
-                                })}
-                            </TableRow>
-                        ))}
-                    </TableHeader>
-                    <TableBody>
-                        {table.getRowModel().rows?.length ? (
-                            table.getRowModel().rows.map((row:any) => (
-                                <TableRow
-                                    key={row.id}
-                                    data-state={row.getIsSelected() && "selected"}
-                                >
-                                    {row.getVisibleCells().map((cell:any) => (
-                                        <TableCell key={cell.id}>
-                                            {flexRender(
-                                                cell.column.columnDef.cell,
-                                                cell.getContext()
-                                            )}
-                                        </TableCell>
-                                    ))}
-                                </TableRow>
-                            ))
-                        ) : (
-                            <TableRow>
-                                <TableCell
-                                    colSpan={columns.length}
-                                    className="h-24 text-center"
-                                >
-                                    Немає результатів.
-                                </TableCell>
-                            </TableRow>
-                        )}
-                    </TableBody>
-                </Table>
-            </div>
-            <div className="flex items-center justify-end space-x-2 py-4">
-                <div className="flex-1 text-sm text-muted-foreground">
-                    {table.getFilteredSelectedRowModel().rows.length} of{" "}
-                    {table.getFilteredRowModel().rows.length} row(s) selected.
-                </div>
-                <div className="space-x-2">
+            <Dialog>
+                <DialogTrigger>
                     <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => table.previousPage()}
-                        disabled={!table.getCanPreviousPage()}
+                        size="lg"
                     >
-                        Попередня
+                        Запросити викладачів
                     </Button>
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => table.nextPage()}
-                        disabled={!table.getCanNextPage()}
-                    >
-                        Наступна
-                    </Button>
-                </div>
-            </div>
+                </DialogTrigger>
+                <DialogWrapper header={dialogOptions.addTeachers.header} button={dialogOptions.addTeachers.button}>
+                    <TeacherModal createTeachersList={createTeachersList} createSingleTeacher={createSingleTeacher} />
+                </DialogWrapper>
+            </Dialog>
+
+            <DateTable table={table} columns={columns} />
         </PageWrapper>
+    )
+}
+
+const TeacherModal = ({createTeachersList, createSingleTeacher}:{createTeachersList: ({}) => {}, createSingleTeacher: ({}) => {}}) => {
+    return (
+        <Tabs defaultValue="many" className="w-full">
+            <TabsList className="w-full">
+                <TabsTrigger className="w-[50%]" value="many">Файлом</TabsTrigger>
+                <TabsTrigger className="w-[50%]" value="single">Дані про одного</TabsTrigger>
+            </TabsList>
+            <TabsContent value="many"><TeachersDataFileForm createTeachersList={createTeachersList} /></TabsContent>
+            <TabsContent value="single"><TeacherDataForm handleSubmitTeacherForm={createSingleTeacher} editOption={null}/></TabsContent>
+        </Tabs>
     )
 }

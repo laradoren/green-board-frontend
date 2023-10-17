@@ -8,6 +8,7 @@ export * from "./form";
 export * from "./input";
 export * from "./label";
 export * from "./navigation-menu";
+export * from "./pagination";
 export * from "./progress";
 export * from "./scroll-area";
 export * from "./button";
