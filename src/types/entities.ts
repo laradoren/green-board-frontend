@@ -10,7 +10,7 @@ export type StudentInfo = {
     email: string
 }
 
-export type Subject = {
+export type TeacherSubject = {
     id: string
     title: string
     tasks: Task[]
@@ -34,8 +34,7 @@ export type HomeTask = {
 
 export type Group = {
     id: string
-    title: string
-    students: Student[]
+    code: string
 }
 
 export type Student = {
@@ -70,6 +69,11 @@ export interface IUserExelData {
     email: string
 }
 
+export interface IGroupData {
+    _id: string
+    code: string
+}
+
 export interface IGlobalContext {
     currentUser: IUserData
     setCurrentUser: (data: IUserData) => void
@@ -82,6 +86,9 @@ export interface IGlobalContext {
     createGroup: (code: string, students: any) => void
     deleteStudentsList: (list: any) => void
     updateStudent: (data: any) => void
+    allGroupsData: any,
+    createTeacherSubject: (data: any) => void
+    allTeacherSubjects: TeacherSubject[]
 }
 
 export interface IDispatchCallTeachersProps {

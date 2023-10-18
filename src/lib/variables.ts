@@ -40,12 +40,6 @@ export const navigationOptions: NavigationOptionType[] = [
         type: "study"
     },
     {
-        title: "Календар",
-        role: "teacher",
-        href: "/calendar",
-        type: "calendar"
-    },
-    {
         title: "Вийти з системи",
         role: "teacher",
         href: "logout",

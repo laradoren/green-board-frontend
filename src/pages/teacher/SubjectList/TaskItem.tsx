@@ -50,14 +50,6 @@ const TaskActions = ({title}: {title: string}) => {
                 </DialogWrapper>
             </Dialog>
             <DropdownMenuSeparator />
-            <Dialog>
-                <DialogTrigger>
-                    <DropdownMenuLabel>Редагування</DropdownMenuLabel>
-                </DialogTrigger>
-                <DialogWrapper header={dialogOptions.editTask.header} button={dialogOptions.editTask.button}>
-                    <TaskForm />
-                </DialogWrapper>
-            </Dialog>
             <DropdownMenuSeparator />
             <Dialog>
                 <DialogTrigger>

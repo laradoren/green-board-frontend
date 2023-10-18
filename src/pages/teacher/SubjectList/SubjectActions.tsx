@@ -9,7 +9,7 @@ import * as React from "react";
 import {DialogWrapper} from "../../../components/wrapper/dialog-wrapper";
 import {dialogOptions} from "../../../lib/variables";
 
-export const SubjectActions = () => {
+export const SubjectActions = ({subject}: {subject: string}) => {
     return (
         <div className="flex justify-between items-center">
             <Dialog>
@@ -20,7 +20,7 @@ export const SubjectActions = () => {
                         Додати нову дисципліну
                     </Button>
                 </DialogTrigger>
-                <DialogWrapper header={dialogOptions.newSubject.header} button={dialogOptions.newSubject.button}>
+                <DialogWrapper header={dialogOptions.newSubject.header} >
                     <SubjectForm />
                 </DialogWrapper>
             </Dialog>
@@ -28,12 +28,13 @@ export const SubjectActions = () => {
                 <DialogTrigger>
                     <Button
                         size="lg"
+                        variant={"outline"}
                     >
                         Публікація завдання
                     </Button>
                 </DialogTrigger>
                 <DialogWrapper header={dialogOptions.newTask.header} button={dialogOptions.newTask.button}>
-                    <TaskForm />
+                    <TaskForm subject={subject} />
                 </DialogWrapper>
             </Dialog>
         </div>

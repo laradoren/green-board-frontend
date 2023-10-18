@@ -41,11 +41,20 @@ export const FIND_USER = gql`
         }
     }
 `
-export const REGISTER_USER = gql`
-    mutation Register($email: String!, $password: String!) {
-        register(email: $email, password: $password) {
-            token user {
-                role fullname email
+
+export const GET_ALL_GROUPS = gql`
+    query AllGroups {
+        allGroups {
+            _id code
+        }
+    }
+`
+
+export const GET_TEACHER_SUBJECTS = gql`
+    query GetTeacherSubjects($email: String!) {
+        getTeacherSubjects(email: $email) {
+            _id title tasks {
+                _id name description
             }
         }
     }

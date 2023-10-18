@@ -1,4 +1,4 @@
-import {parseBackendStudentData, parseBackendTeacherData} from "../lib/helper";
+import {parseBackendStudentData, parseBackendTeacherData, parseBackendTeacherSubjectsData} from "../lib/helper";
 export const allTeachersReducer = ( state: any, { type, payload }: any) => {
     const newState = [ ...state ];
     switch (type) {
@@ -40,5 +40,18 @@ export const allStudentsReducer = ( state: any, { type, payload }: any) => {
             return parseBackendStudentData(payload);
         default:
             throw new Error("Unknow type for StudentReducer");
+    }
+}
+
+export const allTeacherSubjectsReducer = ( state: any, { type, payload }: any) => {
+    const newState = [ ...state ];
+    switch (type) {
+        case "create":
+            console.log(payload);
+            return [...newState, parseBackendTeacherSubjectsData([payload])[0]];
+        case "set":
+            return parseBackendTeacherSubjectsData(payload);
+        default:
+            throw new Error("Unknow type for TeacherSubjectsReducer");
     }
 }

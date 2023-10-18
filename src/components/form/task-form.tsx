@@ -20,7 +20,7 @@ const taskSchema = z.object({
     deadline: z.string().min(5).max(20),
 });
 
-export const TaskForm = () => {
+export const TaskForm = ({subject}: {subject: string}) => {
     const form = useForm<z.infer<typeof taskSchema>>({
         resolver: zodResolver(taskSchema),
         defaultValues: {
@@ -32,7 +32,7 @@ export const TaskForm = () => {
     })
 
     function onSubmit(values: z.infer<typeof taskSchema>) {
-        console.log(values)
+
     }
 
     return (

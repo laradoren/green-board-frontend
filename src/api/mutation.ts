@@ -72,3 +72,21 @@ export const DELETE_STUDENTS_LIST = gql`
         }
     }
 `
+
+export const REGISTER_USER = gql`
+    mutation Register($email: String!, $password: String!) {
+        register(email: $email, password: $password) {
+            token user {
+                role fullname email
+            }
+        }
+    }
+`
+
+export const CREATE_SUBJECT = gql`
+    mutation CreateSubject($newSubject: SubjectInput) {
+        createSubject(newSubject: $newSubject) {
+            _id title
+        }
+    }
+`
