@@ -3,12 +3,12 @@ import GlobalContext from "./GlobalContext";
 import {isUserType, IUser, IUserData} from "../types";
 import {useLazyQuery, useMutation, useQuery} from "@apollo/client";
 import {
-    CREATE_GROUP, CREATE_SUBJECT,
+    CREATE_GROUP, CREATE_SUBJECT, CREATE_TASK,
     CREATE_TEACHERS_LIST,
-    CREATE_USER, DELETE_STUDENTS_LIST,
-    DELETE_TEACHERS_LIST, FIND_USER, GET_ALL_GROUPS,
+    CREATE_USER, DELETE_STUDENTS_LIST, DELETE_TASK,
+    DELETE_TEACHERS_LIST, GET_ALL_GROUPS,
     GET_ALL_STUDENTS,
-    GET_ALL_TEACHERS, GET_TEACHER_SUBJECTS, REGISTER_USER, UPDATE_STUDENT,
+    GET_ALL_TEACHERS, GET_TEACHER_SUBJECTS, UPDATE_STUDENT,
     UPDATE_TEACHER
 } from "../api";
 import {allStudentsReducer, allTeachersReducer, allTeacherSubjectsReducer} from "./reducers";
@@ -55,6 +55,8 @@ const ContextWrapper = ({ children }: any) => {
     const [updateStudent] = useMutation(UPDATE_STUDENT);
 
     const [createSubject] = useMutation(CREATE_SUBJECT);
+    const [createTask] = useMutation(CREATE_TASK);
+    const [deleteTask] = useMutation(DELETE_TASK);
 
     const [allTeachers, dispatchCallTeachers] = useReducer(
         allTeachersReducer,
@@ -89,7 +91,9 @@ const ContextWrapper = ({ children }: any) => {
             const parsedData = JSON.parse(data);
             if(parsedData.email) {
                 getTeacherSubjects({variables: {email: parsedData.email}}).then(result => {
-                    dispatchCallTeacherSubjects({type: "set", payload: result.data.getTeacherSubjects});
+                    if(result.data) {
+                        dispatchCallTeacherSubjects({type: "set", payload: result.data.getTeacherSubjects});
+                    }
                 })
             }
         }
@@ -133,6 +137,16 @@ const ContextWrapper = ({ children }: any) => {
             dispatchCallTeacherSubjects({type: "create", payload: result.data.createSubject});
         });
 
+    const createTaskAction = (data: any) => createTask({variables: {newTask: data}})
+        .then((result) => {
+            dispatchCallTeacherSubjects({type: "task", payload: result.data.createTask});
+        });
+
+    const deleteTaskAction = (data: any) => deleteTask({variables: {...data}})
+        .then((result) => {
+            dispatchCallTeacherSubjects({type: "delete", payload: result.data.deleteTask});
+        });
+
   return (
     <GlobalContext.Provider
       value={{
@@ -150,6 +164,8 @@ const ContextWrapper = ({ children }: any) => {
           deleteStudentsList: deleteStudentsListAction,
           updateStudent: updateStudentAction,
           createTeacherSubject: createTeacherSubjectAction,
+          createTask: createTaskAction,
+          deleteTask: deleteTaskAction,
       }}
     >
       {children}

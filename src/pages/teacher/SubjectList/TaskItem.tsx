@@ -5,22 +5,21 @@ import {
     DropdownMenuContent,
     DropdownMenuLabel, DropdownMenuSeparator,
     DropdownMenuTrigger,
-    Progress, Separator
+    Separator
 } from "../../../components/ui";
 import {MoreHorizontal} from "lucide-react";
 import * as React from "react";
 import {DialogWrapper} from "../../../components/wrapper/dialog-wrapper";
-import {dialogOptions} from "../../../lib/variables";
-import {TaskForm} from "../../../components/form/task-form";
+import {useContext} from "react";
+import GlobalContext from "../../../context/GlobalContext";
 
 export const TaskItem = ({task} : {task: Task}) => {
     return (
         <>
             <div className="w-full flex justify-between items-center p-4">
-                <div className="whitespace-nowrap overflow-hidden mr-1">{task.title}</div>
-                <div className="whitespace-nowrap overflow-hidden cursor-pointer mr-1">{task.file}</div>
-                <div className="w-[45%] flex items-center">
-                    <Progress value={13} className="mr-4" />
+                <div className="whitespace-nowrap overflow-hidden mr-1">{task.name}</div>
+                <div className="flex items-center">
+                    {/*<Progress value={13} className="mr-4" />*/}
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button variant="ghost" className="h-8 w-8 p-0">
@@ -28,7 +27,7 @@ export const TaskItem = ({task} : {task: Task}) => {
                                 <MoreHorizontal className="h-4 w-4" />
                             </Button>
                         </DropdownMenuTrigger>
-                        <TaskActions title={task.title} />
+                        <TaskActions task={task} />
                     </DropdownMenu>
                 </div>
 
@@ -38,27 +37,21 @@ export const TaskItem = ({task} : {task: Task}) => {
     )
 }
 
-const TaskActions = ({title}: {title: string}) => {
+const TaskActions = ({task} : {task: Task}) => {
+    const { deleteTask } = useContext(GlobalContext);
+
     return (
         <DropdownMenuContent align="end">
             <Dialog>
                 <DialogTrigger>
                     <DropdownMenuLabel>Деталі</DropdownMenuLabel>
                 </DialogTrigger>
-                <DialogWrapper header={title} button={""}>
-                    Task content
+                <DialogWrapper header={task.name} button={""}>
+                    {task.description}
                 </DialogWrapper>
             </Dialog>
             <DropdownMenuSeparator />
-            <DropdownMenuSeparator />
-            <Dialog>
-                <DialogTrigger>
-                    <DropdownMenuLabel>Видалити</DropdownMenuLabel>
-                </DialogTrigger>
-                <DialogWrapper header={dialogOptions.deleteTask.header} button={dialogOptions.deleteTask.button}>
-                    <div>Якщо ви видалите завдання, його неможливо буде відновити</div>
-                </DialogWrapper>
-            </Dialog>
+            <DropdownMenuLabel className={"cursor-pointer"} onClick={() => deleteTask({id: task.id})}>Видалити</DropdownMenuLabel>
         </DropdownMenuContent>
     )
 }

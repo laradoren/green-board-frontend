@@ -60,8 +60,7 @@ export const dialogOptions:DialogOptionsType = {
         button: "Додати"
     },
     newTask: {
-        header: "Публікація нового завдання",
-        button: "Створити"
+        header: "Публікація нового завдання"
     },
     editTask: {
         header: "Додати зміни в завдання",

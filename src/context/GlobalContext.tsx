@@ -1,5 +1,5 @@
 import React from 'react';
-import {IDispatchCallTeachersProps, IGlobalContext, IUserData, TeacherSubject} from "../types";
+import {IGlobalContext, IUserData,} from "../types";
 
 const GlobalContext = React.createContext<IGlobalContext>({
     currentUser: {
@@ -23,6 +23,8 @@ const GlobalContext = React.createContext<IGlobalContext>({
     allGroupsData: [],
     createTeacherSubject: (data: any) => {},
     allTeacherSubjects: [],
+    createTask: (data: any) => {},
+    deleteTask: (data: any) => {},
 });
 
 export default GlobalContext;

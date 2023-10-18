@@ -11,7 +11,7 @@ import {
 import {Task, TeacherSubject} from "../../../types";
 import {TaskItem} from "./TaskItem";
 import {SubjectActions} from "./SubjectActions";
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import GlobalContext from "../../../context/GlobalContext";
 
 // const subjects:Subject[] = [
@@ -63,7 +63,12 @@ import GlobalContext from "../../../context/GlobalContext";
 // ]
 export const SubjectList = () => {
     const { allTeacherSubjects: subjects } = useContext(GlobalContext);
-    const [selected, setSelected] = useState(subjects[0].id);
+    const [selected, setSelected] = useState("");
+    useEffect(() => {
+        if(subjects && subjects.length) {
+            setSelected(subjects[0].id);
+        }
+    }, [subjects]);
     return (
         <PageWrapper className="w-full" title={"Дисципліни"}>
             <SubjectActions subject={selected} />

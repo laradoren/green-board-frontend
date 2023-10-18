@@ -18,10 +18,8 @@ export type TeacherSubject = {
 
 export type Task = {
     id: string
-    title: string
+    name: string
     description: string
-    file: string
-    deadline: string
 }
 
 export type HomeTask = {
@@ -89,6 +87,8 @@ export interface IGlobalContext {
     allGroupsData: any,
     createTeacherSubject: (data: any) => void
     allTeacherSubjects: TeacherSubject[]
+    createTask: (data: any) => void
+    deleteTask: (data: any) => void
 }
 
 export interface IDispatchCallTeachersProps {

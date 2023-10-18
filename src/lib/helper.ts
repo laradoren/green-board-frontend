@@ -34,4 +34,7 @@ export const parseBackendStudentData = (data: any) =>
     data.map(((item:any) => ({id: item._id, fullname: item.user.fullname, email: item.user.email, group: item.group})));
 
 export const parseBackendTeacherSubjectsData = (data: any) =>
-    data.map(((item:any) => ({id: item._id, tasks: item.tasks || [], title: item.title})));
+    data.map(((item:any) => ({id: item._id, tasks: parseBackendTeacherTasksData(item.tasks) || [], title: item.title})));
+
+export const parseBackendTeacherTasksData = (data: any) =>
+    data.map(((item:any) => ({id: item._id, name: item.name, description: item.description})));

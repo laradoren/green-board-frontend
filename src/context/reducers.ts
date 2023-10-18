@@ -47,8 +47,13 @@ export const allTeacherSubjectsReducer = ( state: any, { type, payload }: any) =
     const newState = [ ...state ];
     switch (type) {
         case "create":
-            console.log(payload);
             return [...newState, parseBackendTeacherSubjectsData([payload])[0]];
+        case "task":
+        case "delete":
+            const updatedItem = parseBackendTeacherSubjectsData([payload])[0];
+            return newState.map((item: any) =>
+                item.id === updatedItem.id ? updatedItem : item
+            );
         case "set":
             return parseBackendTeacherSubjectsData(payload);
         default:

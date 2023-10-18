@@ -86,7 +86,29 @@ export const REGISTER_USER = gql`
 export const CREATE_SUBJECT = gql`
     mutation CreateSubject($newSubject: SubjectInput) {
         createSubject(newSubject: $newSubject) {
-            _id title
+            _id title tasks{
+                _id name description
+            }
+        }
+    }
+`
+
+export const CREATE_TASK = gql`
+    mutation CreateTask($newTask: TaskInput!) {
+        createTask(newTask: $newTask) {
+            _id title tasks {
+                _id name description
+            }
+        }
+    }
+`
+
+export const DELETE_TASK = gql`
+    mutation DeleteTask($id: ID!) {
+        deleteTask(id: $id) {
+            _id title tasks {
+                _id name description
+            }
         }
     }
 `
