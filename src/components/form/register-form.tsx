@@ -61,10 +61,13 @@ export const RegisterForm = () => {
     function onRegistration(values: z.infer<typeof registerSchema>) {
         const data = findUserForm.getValues();
         registerUser({variables: {password: values.password, email: data.email}}).then((result) => {
-            let {token, user} = result.data.register;
-            setCurrentUser({ token, data: user });
+            let {token, user, group, teacher, student } = result.data.register;
+            setCurrentUser({ token, group, teacher, student, data: user });
             localStorage.setItem("token", "Bearer " + token);
             localStorage.setItem("data", JSON.stringify(user));
+            localStorage.setItem("group", group);
+            localStorage.setItem("teacher", teacher);
+            localStorage.setItem("student", student);
             window.location.href = '/';
         });
     }

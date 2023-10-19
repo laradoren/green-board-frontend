@@ -28,24 +28,18 @@ export const navigationOptions: NavigationOptionType[] = [
         type: "subjects"
     },
     {
-        title: "Перевірка завдань",
-        role: "teacher",
-        href: "/hometask/list",
-        type: "tasks"
-    },
-    {
-        title: "Електронний журнал",
-        role: "teacher",
-        href: "/study/list",
-        type: "study"
-    },
-    {
         title: "Вийти з системи",
         role: "teacher",
         href: "logout",
         type: "logout"
     },
     /******************StudentRole******************/
+    {
+        title: "Список завдань",
+        role: "student",
+        href: "/hometask/list",
+        type: "tasks"
+    },
     {
         title: "Вийти з системи",
         role: "student",
@@ -85,6 +79,9 @@ export const dialogOptions:DialogOptionsType = {
     },
     updateStudent: {
         header: "Внесення змін в дані студента",
+    },
+    updateHometask: {
+        header: "Додати інформацію та відправити на перевірку",
     },
 }
 

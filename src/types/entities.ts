@@ -17,16 +17,22 @@ export type TeacherSubject = {
 }
 
 export type Task = {
+    hometasks: HomeTask[]
     id: string
     name: string
     description: string
 }
 
 export type HomeTask = {
-    id: string
-    student: string
-    file: string
-    date: string
+    text: string
+    status: "success"|"pending"|"fail"
+}
+export type StudentHomeTask = {
+    description: string
+    name: string
+    taskId: string
+    text: string
+    title: string
     status: "success"|"pending"|"fail"
 }
 
@@ -49,6 +55,10 @@ export type Student = {
 export interface IUserData {
     token: string
     data: IUser
+    group?: string
+    teacher?: string
+
+    student: string
 }
 
 export interface IUser {
@@ -89,6 +99,8 @@ export interface IGlobalContext {
     allTeacherSubjects: TeacherSubject[]
     createTask: (data: any) => void
     deleteTask: (data: any) => void
+    allStudentsSubjects: StudentHomeTask[];
+    createHomeTask: (data: any) => void
 }
 
 export interface IDispatchCallTeachersProps {

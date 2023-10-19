@@ -3,7 +3,7 @@ import {gql} from "@apollo/client";
 export const LOGIN_USER = gql`
     query Login($email: String!, $password: String!) {
         login(email: $email, password: $password) {
-            token user {
+            token group teacher student user {
                 role fullname email
             }
         }
@@ -51,12 +51,37 @@ export const GET_ALL_GROUPS = gql`
 `
 
 export const GET_TEACHER_SUBJECTS = gql`
-    query GetTeacherSubjects($email: String!) {
-        getTeacherSubjects(email: $email) {
+    query GetTeacherSubjects($id: ID!) {
+        getTeacherSubjects(id: $id) {
             _id title tasks {
-                _id name description
+                _id name description             
+                hometasks {
+                    _id
+                    text
+                    status
+                }
             }
         }
     }
 `
+export const GET_STUDENT_SUBJECTS = gql`
+    query GetStudentsSubjects($group: String!, $id: ID!) {
+        getStudentSubjects(group: $group, id: $id) {
+            _id
+            title
+            tasks {
+                _id
+                name
+                description
+                hometasks {
+                    _id
+                    text
+                    status
+                }
+            }
+        }
+    }
+`
+
+
 

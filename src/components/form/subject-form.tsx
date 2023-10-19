@@ -42,7 +42,7 @@ export const SubjectForm = () => {
     })
 
     function onSubmit(values: z.infer<typeof subjectSchema>) {
-        createTeacherSubject({title: values.title, groups: selectedData, email: currentUser.data.email});
+        createTeacherSubject({title: values.title, groups: selectedData, teacher: currentUser.teacher});
     }
 
     return (

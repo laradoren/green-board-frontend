@@ -17,20 +17,21 @@ import {flexRender} from "@tanstack/react-table";
 import * as React from "react";
 import {ChevronDown} from "lucide-react";
 import {BsFillTrashFill} from "react-icons/bs";
+import {ReactNode} from "react";
 
-export const DateTable = ({table, columns, dialog, search}: {table:any, columns:any, dialog: any, search?: any}) => {
+export const DateTable = ({table, columns, dialog, search, disableDelete }: {table:any, columns:any, dialog: any, search?: any, disableDelete?: any}) => {
     return (
         <>
             <div className="flex items-center justify-between py-4">
-                <Input
+                {disableDelete ? search : <Input
                     placeholder="Шукати за ім'ям"
                     value={(table.getColumn("fullname")?.getFilterValue() as string) ?? ""}
                     onChange={(event) =>
                         table.getColumn("fullname")?.setFilterValue(event.target.value)
                     }
                     className="max-w-sm"
-                />
-                {search}
+                />}
+
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="outline" className="ml-auto">
@@ -57,7 +58,7 @@ export const DateTable = ({table, columns, dialog, search}: {table:any, columns:
                             })}
                     </DropdownMenuContent>
                 </DropdownMenu>
-                <Dialog>
+                {!disableDelete && <Dialog>
                     <DialogTrigger>
                         <Button
                             variant="destructive"
@@ -65,11 +66,11 @@ export const DateTable = ({table, columns, dialog, search}: {table:any, columns:
                             disabled={!table.getFilteredSelectedRowModel().rows.length}
                         >
                             <span className="sr-only">Видалити</span>
-                            <BsFillTrashFill className="h-5 w-5" />
+                            <BsFillTrashFill className="h-5 w-5"/>
                         </Button>
                     </DialogTrigger>
                     {dialog}
-                </Dialog>
+                </Dialog>}
             </div>
             <div className="rounded-md border">
                 <Table>

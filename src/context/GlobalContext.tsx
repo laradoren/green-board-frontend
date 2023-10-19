@@ -8,7 +8,10 @@ const GlobalContext = React.createContext<IGlobalContext>({
             fullname: "",
             email: ""
         },
-        token: ""
+        token: "",
+        group: "",
+        teacher: "",
+        student: ""
     },
     setCurrentUser: (value: IUserData) => {},
     allTeachers: [],
@@ -25,6 +28,8 @@ const GlobalContext = React.createContext<IGlobalContext>({
     allTeacherSubjects: [],
     createTask: (data: any) => {},
     deleteTask: (data: any) => {},
+    allStudentsSubjects: [],
+    createHomeTask: (data: any) => {}
 });
 
 export default GlobalContext;

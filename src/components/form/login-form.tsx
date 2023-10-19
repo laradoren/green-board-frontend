@@ -31,10 +31,13 @@ export const LoginForm = () => {
     const [loginUser, {loading}] = useLazyQuery(LOGIN_USER, {
         onError: error=> console.error(error),
         onCompleted: (data) => {
-            let {token, user} = data.login;
-            setCurrentUser({ token, data: user });
+            let {token, user, group, teacher, student} = data.login;
+            setCurrentUser({ token, group, teacher, student, data: user });
             localStorage.setItem("token", "Bearer " + token);
             localStorage.setItem("data", JSON.stringify(user));
+            localStorage.setItem("group", group);
+            localStorage.setItem("teacher", teacher);
+            localStorage.setItem("student", student);
             window.location.href = '/';
         }
     });

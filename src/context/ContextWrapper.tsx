@@ -3,35 +3,38 @@ import GlobalContext from "./GlobalContext";
 import {isUserType, IUser, IUserData} from "../types";
 import {useLazyQuery, useMutation, useQuery} from "@apollo/client";
 import {
-    CREATE_GROUP, CREATE_SUBJECT, CREATE_TASK,
+    CREATE_GROUP, CREATE_HOMETASK, CREATE_SUBJECT, CREATE_TASK,
     CREATE_TEACHERS_LIST,
     CREATE_USER, DELETE_STUDENTS_LIST, DELETE_TASK,
     DELETE_TEACHERS_LIST, GET_ALL_GROUPS,
     GET_ALL_STUDENTS,
-    GET_ALL_TEACHERS, GET_TEACHER_SUBJECTS, UPDATE_STUDENT,
+    GET_ALL_TEACHERS, GET_STUDENT_SUBJECTS, GET_TEACHER_SUBJECTS, UPDATE_STUDENT,
     UPDATE_TEACHER
 } from "../api";
-import {allStudentsReducer, allTeachersReducer, allTeacherSubjectsReducer} from "./reducers";
+import {
+    allStudentsReducer,
+    allStudentsSubjectsReducer,
+    allTeachersReducer,
+    allTeacherSubjectsReducer
+} from "./reducers";
+import {initCurrentUser} from "../lib/helper";
 
 const ContextWrapper = ({ children }: any) => {
-    const [currentUser, setCurrentUser] = useState<IUserData>({
-        data: {
-            role: "",
-            fullname: "",
-            email: ""
-        },
-        token: ""
-    });
+    const [currentUser, setCurrentUser] = useState<IUserData>(initCurrentUser());
 
     useEffect(() => {
-        if(currentUser.token && Object.keys(currentUser.data)) return;
+        if(currentUser.token) return;
         const token = localStorage.getItem("token");
         const data = localStorage.getItem("data");
+        const group = localStorage.getItem("group");
+        const teacher = localStorage.getItem("teacher");
+        const student = localStorage.getItem("student");
         let parsedData:IUser;
-        if(token && data && isUserType(JSON.parse(data))) {
+        if(token && teacher && student && group && data && isUserType(JSON.parse(data))) {
             parsedData = JSON.parse(data);
             setCurrentUser({
-                token, data: {
+                token, group, teacher, student,
+                data: {
                     role: parsedData.role,
                     fullname: parsedData.fullname,
                     email: parsedData.email
@@ -43,7 +46,12 @@ const ContextWrapper = ({ children }: any) => {
     const {data: allTeachersData} = useQuery(GET_ALL_TEACHERS);
     const {data: allStudentsData} = useQuery(GET_ALL_STUDENTS);
     const {data: allGroupsData} = useQuery(GET_ALL_GROUPS);
-    const [getTeacherSubjects, {data: allTeacherSubjectsData}] = useLazyQuery(GET_TEACHER_SUBJECTS);
+    const {data: allTeacherSubjectsData} = useQuery(GET_TEACHER_SUBJECTS, {
+        variables: {id: currentUser.teacher}
+    });
+    const {data: allStudentsSubjectsData} = useQuery(GET_STUDENT_SUBJECTS, {
+        variables: {group: currentUser.group, id: currentUser.student}
+    });
 
     const [createSingleTeacher] = useMutation(CREATE_USER);
     const [deleteTeachersList] = useMutation(DELETE_TEACHERS_LIST);
@@ -57,6 +65,8 @@ const ContextWrapper = ({ children }: any) => {
     const [createSubject] = useMutation(CREATE_SUBJECT);
     const [createTask] = useMutation(CREATE_TASK);
     const [deleteTask] = useMutation(DELETE_TASK);
+
+    const [createHometask] = useMutation(CREATE_HOMETASK);
 
     const [allTeachers, dispatchCallTeachers] = useReducer(
         allTeachersReducer,
@@ -76,6 +86,12 @@ const ContextWrapper = ({ children }: any) => {
         allTeacherSubjectsData
     );
 
+    const [allStudentsSubjects, dispatchCallStudentSubjects] = useReducer(
+        allStudentsSubjectsReducer,
+        [],
+        allStudentsSubjectsData
+    );
+
     useEffect(() => {
         if(allTeachersData) {
             dispatchCallTeachers({type: "set", payload: allTeachersData.allTeachers});
@@ -83,22 +99,13 @@ const ContextWrapper = ({ children }: any) => {
         if(allStudentsData) {
             dispatchCallStudents({type: "set", payload: allStudentsData.allStudents});
         }
-    }, [allTeachersData, allStudentsData]);
-
-    useEffect(() => {
-        const data = localStorage.getItem("data");
-        if(data) {
-            const parsedData = JSON.parse(data);
-            if(parsedData.email) {
-                getTeacherSubjects({variables: {email: parsedData.email}}).then(result => {
-                    if(result.data) {
-                        dispatchCallTeacherSubjects({type: "set", payload: result.data.getTeacherSubjects});
-                    }
-                })
-            }
+        if(allTeacherSubjectsData) {
+            dispatchCallTeacherSubjects({type: "set", payload: allTeacherSubjectsData.getTeacherSubjects});
         }
-
-    }, []);
+        if(allStudentsSubjectsData) {
+            dispatchCallStudentSubjects({type: "set", payload: allStudentsSubjectsData.getStudentSubjects});
+        }
+    }, [allTeachersData, allStudentsData, allTeacherSubjectsData, allStudentsSubjectsData]);
 
     const createSingleTeacherAction = (data: any) => createSingleTeacher({variables: {newUser: data}})
         .then((result) => {
@@ -147,6 +154,11 @@ const ContextWrapper = ({ children }: any) => {
             dispatchCallTeacherSubjects({type: "delete", payload: result.data.deleteTask});
         });
 
+    const createHomeTaskAction = (data: any) => createHometask({variables: {hometask: data}})
+        .then((result) => {
+            dispatchCallStudentSubjects({type: "send", payload: result.data.createHometask});
+        });
+
   return (
     <GlobalContext.Provider
       value={{
@@ -156,6 +168,7 @@ const ContextWrapper = ({ children }: any) => {
           allStudents,
           allGroupsData,
           allTeacherSubjects,
+          allStudentsSubjects,
           createSingleTeacher: createSingleTeacherAction,
           deleteTeachersList: deleteTeachersListAction,
           createTeachersList: createTeachersListAction,
@@ -166,6 +179,7 @@ const ContextWrapper = ({ children }: any) => {
           createTeacherSubject: createTeacherSubjectAction,
           createTask: createTaskAction,
           deleteTask: deleteTaskAction,
+          createHomeTask: createHomeTaskAction,
       }}
     >
       {children}

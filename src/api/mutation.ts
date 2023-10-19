@@ -76,7 +76,7 @@ export const DELETE_STUDENTS_LIST = gql`
 export const REGISTER_USER = gql`
     mutation Register($email: String!, $password: String!) {
         register(email: $email, password: $password) {
-            token user {
+            token group teacher student user {
                 role fullname email
             }
         }
@@ -98,6 +98,11 @@ export const CREATE_TASK = gql`
         createTask(newTask: $newTask) {
             _id title tasks {
                 _id name description
+                hometasks {
+                    _id
+                    text
+                    status
+                }
             }
         }
     }
@@ -107,7 +112,31 @@ export const DELETE_TASK = gql`
     mutation DeleteTask($id: ID!) {
         deleteTask(id: $id) {
             _id title tasks {
-                _id name description
+                _id name description                 
+                hometasks {
+                    _id
+                    text
+                    status
+                }
+            }
+        }
+    }
+`
+
+export const CREATE_HOMETASK = gql`
+    mutation CreateHometask($hometask: HometaskInput!) {
+        createHometask(hometask: $hometask) {
+            _id
+            title
+            tasks {
+                _id
+                name
+                description
+                hometasks {
+                    _id
+                    text
+                    status
+                }
             }
         }
     }

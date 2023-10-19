@@ -14,7 +14,10 @@ export const LogoutPage = () => {
                 email: "",
                 fullname: ""
             },
-            token: ""
+            token: "",
+            group: "",
+            teacher: "",
+            student: ""
         });
         window.location.href = '/';
     }

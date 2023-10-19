@@ -1,4 +1,4 @@
-import {Task} from "../../../types";
+import {HomeTask, Task} from "../../../types";
 import {
     Button, Dialog, DialogTrigger,
     DropdownMenu,
@@ -18,6 +18,7 @@ export const TaskItem = ({task} : {task: Task}) => {
         <>
             <div className="w-full flex justify-between items-center p-4">
                 <div className="whitespace-nowrap overflow-hidden mr-1">{task.name}</div>
+                <HomeTasksBlock hometasks={task.hometasks} />
                 <div className="flex items-center">
                     {/*<Progress value={13} className="mr-4" />*/}
                     <DropdownMenu>
@@ -37,9 +38,21 @@ export const TaskItem = ({task} : {task: Task}) => {
     )
 }
 
+const HomeTasksBlock = ({hometasks}: {hometasks: HomeTask[]}) => {
+    if(!hometasks.length) return <></>
+    return (
+        <>
+            {
+                hometasks.map((h: HomeTask) => {
+                    return <div>{h.text}</div>
+                })
+            }
+        </>
+    )
+}
+
 const TaskActions = ({task} : {task: Task}) => {
     const { deleteTask } = useContext(GlobalContext);
-
     return (
         <DropdownMenuContent align="end">
             <Dialog>

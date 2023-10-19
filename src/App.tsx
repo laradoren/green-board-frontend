@@ -3,7 +3,7 @@ import './globals.css'
 import {Route, Routes, Navigate} from "react-router-dom";
 import {LoginPage, NavigationBar, RegisterPage, SubjectList, TeachersList} from "./pages";
 import {Card} from "./components/ui";
-import {HometaskList} from "./pages/teacher/HometaskList";
+import {HometaskList} from "./pages/student/HometaskList";
 import {StudyList} from "./pages/teacher/StudyList";
 import {GroupList} from "./pages/admin/GroupList";
 import {useContext} from "react";
@@ -46,7 +46,7 @@ const getDefaultPage = (role: string) => {
         case "admin":
             return <Navigate to="teacher/list" />
         case "student":
-            return <Navigate to="subject/list" />
+            return <Navigate to="hometask/list" />
         case "teacher":
             return <Navigate to="subject/list" />
         default:
