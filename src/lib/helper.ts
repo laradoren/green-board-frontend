@@ -72,7 +72,7 @@ export const parseBackendTeacherTasksData = (data: any) =>
     data.map(((item:any) => ({id: item._id, name: item.name, description: item.description, hometasks: parseBackendTeacherHomeTasksData((item.hometasks))})));
 
 export const parseBackendTeacherHomeTasksData = (data: any) =>
-    data.map(((item:any) => ({id: item._id, text: item.text, status: item.status})));
+    data.map(((item:any) => ({id: item._id, text: item.text, status: item.status, student: item.student.user.fullname})));
 
 export const parseBackendStudentsSubjectsData = (data: any) => {
     let parsedData: StudentHomeTask[] = [];

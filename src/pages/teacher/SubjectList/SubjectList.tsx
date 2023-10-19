@@ -14,53 +14,6 @@ import {SubjectActions} from "./SubjectActions";
 import {useContext, useEffect, useState} from "react";
 import GlobalContext from "../../../context/GlobalContext";
 
-// const subjects:Subject[] = [
-//     {
-//         id: "subject1",
-//         title: "Основи програмування",
-//         tasks: [
-//             {
-//                 id: "task1",
-//                 title: "Лекція 1: Основи програмування",
-//                 description: "Опрацювати лекцію",
-//                 file: "Лекція 1",
-//                 deadline: "20-12-2023",
-//             },
-//             {
-//                 id: "task2",
-//                 title: "Лабораторна робота 1",
-//                 description: "Виконати лабораторну роботу 1 та надіслати звіт",
-//                 file: "Лабораторна робота 1",
-//                 deadline: "25-12-202"
-//             }
-//         ]
-//     },
-//     {
-//         id: "subject2",
-//         title: "Графові бази даних",
-//         tasks: [
-//             {
-//                 id: "task3",
-//                 title: "Лабораторна робота 2",
-//                 description: "Надіслати звіт по виконаній роботі",
-//                 file: "Файл 1",
-//                 deadline: "22-12-2023"
-//             },
-//             {
-//                 id: "task4",
-//                 title: "Заповнити таблицю",
-//                 description: "Заповини та надіслати",
-//                 file: "Таблиця 1",
-//                 deadline: "18-12-2023"
-//             }
-//         ]
-//     },
-//     {
-//         id: "subject3",
-//         title: "Графові бази даних 2",
-//         tasks: []
-//     }
-// ]
 export const SubjectList = () => {
     const { allTeacherSubjects: subjects } = useContext(GlobalContext);
     const [selected, setSelected] = useState("");
@@ -105,7 +58,7 @@ export const SubjectList = () => {
 const TaskList = ({tasks}: {tasks: Task[]}) => {
     return (
         <ScrollArea className="h-[calc(100vh-16.35rem)] w-[calc(100vw-30.5rem)] rounded-md border">
-            <div className="p-4">
+            <div className="px-4">
                 {
                     (!tasks.length) ? (
                         <Label className="flex w-full justify-center mt-4">

@@ -90,16 +90,19 @@ const columns: ColumnDef<StudentHomeTask>[] = [
                             <MoreHorizontal className="h-4 w-4" />
                         </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <Dialog>
-                            <DialogTrigger>
-                                <DropdownMenuLabel>Відправити на перевірку</DropdownMenuLabel>
-                            </DialogTrigger>
-                            <DialogWrapper header={dialogOptions.updateHometask.header} >
-                                <HomeTaskForm options={row.original} />
-                            </DialogWrapper>
-                        </Dialog>
-                    </DropdownMenuContent>
+                    {row.original.status !== "success" &&
+                        <DropdownMenuContent align="end">
+                            <Dialog>
+                                <DialogTrigger>
+
+                                    <DropdownMenuLabel>Відправити на перевірку</DropdownMenuLabel>
+                                </DialogTrigger>
+                                <DialogWrapper header={dialogOptions.updateHometask.header} >
+                                    <HomeTaskForm options={row.original}/>
+
+                                </DialogWrapper>
+                            </Dialog>
+                        </DropdownMenuContent>}
                 </DropdownMenu>
             )
         },

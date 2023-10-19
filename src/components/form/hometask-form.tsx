@@ -33,19 +33,12 @@ export const HomeTaskForm = ({options, status} : {options: any, status?: string}
     })
 
     function onSubmit(values: z.infer<typeof hometaskSchema>) {
-        if(currentUser.data.role === "student") {
-            createHomeTask({
-                status: "pending",
-                text: values.text,
-                student: currentUser.student,
-                task: options.taskId
-            });
-        } else {
-            createHomeTask({
-                status: status,
-                text: values.text
-            });
-        }
+        createHomeTask({
+            status: "pending",
+            text: values.text,
+            student: currentUser.student,
+            task: options.taskId
+        });
     }
 
     return (

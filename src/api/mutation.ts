@@ -141,3 +141,13 @@ export const CREATE_HOMETASK = gql`
         }
     }
 `
+
+export const UPDATE_HOMETASK = gql`
+    mutation UpdateHometask($id: ID!, $status: String!) {
+        updateHometask(id: $id, status: $status) {
+            _id
+            status
+            text
+        }
+    }
+`

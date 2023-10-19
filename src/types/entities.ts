@@ -24,6 +24,8 @@ export type Task = {
 }
 
 export type HomeTask = {
+    id: string
+    student: string
     text: string
     status: "success"|"pending"|"fail"
 }
@@ -101,6 +103,7 @@ export interface IGlobalContext {
     deleteTask: (data: any) => void
     allStudentsSubjects: StudentHomeTask[];
     createHomeTask: (data: any) => void
+    updateHomeTask: (data: any) => void
 }
 
 export interface IDispatchCallTeachersProps {

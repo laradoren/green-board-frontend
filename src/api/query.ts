@@ -59,6 +59,11 @@ export const GET_TEACHER_SUBJECTS = gql`
                     _id
                     text
                     status
+                    student {
+                        user {
+                            fullname
+                        }
+                    }
                 }
             }
         }

@@ -59,6 +59,8 @@ export const allTeacherSubjectsReducer = ( state: any, { type, payload }: any) =
             return newState.map((item: any) =>
                 item.id === updatedItem.id ? updatedItem : item
             );
+        case "update":
+            return newState;
         case "set":
             return parseBackendTeacherSubjectsData(payload);
         default:

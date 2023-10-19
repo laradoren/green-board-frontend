@@ -8,7 +8,7 @@ import {
     CREATE_USER, DELETE_STUDENTS_LIST, DELETE_TASK,
     DELETE_TEACHERS_LIST, GET_ALL_GROUPS,
     GET_ALL_STUDENTS,
-    GET_ALL_TEACHERS, GET_STUDENT_SUBJECTS, GET_TEACHER_SUBJECTS, UPDATE_STUDENT,
+    GET_ALL_TEACHERS, GET_STUDENT_SUBJECTS, GET_TEACHER_SUBJECTS, UPDATE_HOMETASK, UPDATE_STUDENT,
     UPDATE_TEACHER
 } from "../api";
 import {
@@ -67,6 +67,7 @@ const ContextWrapper = ({ children }: any) => {
     const [deleteTask] = useMutation(DELETE_TASK);
 
     const [createHometask] = useMutation(CREATE_HOMETASK);
+    const [updateHometask] = useMutation(UPDATE_HOMETASK);
 
     const [allTeachers, dispatchCallTeachers] = useReducer(
         allTeachersReducer,
@@ -159,6 +160,11 @@ const ContextWrapper = ({ children }: any) => {
             dispatchCallStudentSubjects({type: "send", payload: result.data.createHometask});
         });
 
+    const updateHomeTaskAction = (data: any) => updateHometask({variables: {...data}})
+        .then((result) => {
+            dispatchCallTeacherSubjects({type: "update", payload: result.data.updateHometask});
+        });
+
   return (
     <GlobalContext.Provider
       value={{
@@ -180,6 +186,7 @@ const ContextWrapper = ({ children }: any) => {
           createTask: createTaskAction,
           deleteTask: deleteTaskAction,
           createHomeTask: createHomeTaskAction,
+          updateHomeTask: updateHomeTaskAction,
       }}
     >
       {children}
