@@ -30,7 +30,7 @@ import {DialogWrapper} from "../../components/wrapper/dialog-wrapper";
 import {dialogOptions} from "../../lib";
 import {TeacherDataForm, TeachersDataFileForm} from "../../components/form/teacher-form";
 import {DeleteDialog} from "../../components/dialog/delete-dialog.ts";
-import {useContext} from "react";
+import {useContext, useEffect} from "react";
 import GlobalContext from "../../context/GlobalContext";
 import {GroupForm} from "../../components/form";
 import {makeArrayWithIds} from "../../lib/helper";
@@ -150,6 +150,13 @@ export function GroupList() {
             rowSelection,
         },
     })
+
+    useEffect(() => {
+        if(allStudents) {
+            table.setPageSize(5);
+        }
+    }, []);
+
 
     return (
         <PageWrapper className="w-full" title={"Список груп"}>

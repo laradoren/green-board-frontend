@@ -104,6 +104,8 @@ export interface IGlobalContext {
     allStudentsSubjects: StudentHomeTask[];
     createHomeTask: (data: any) => void
     updateHomeTask: (data: any) => void
+    errors: any
+    setErrors: (data: any) => void
 }
 
 export interface IDispatchCallTeachersProps {

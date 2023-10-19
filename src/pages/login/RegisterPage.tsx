@@ -1,4 +1,13 @@
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../../components/ui";
+import {
+    Alert, AlertDescription,
+    AlertTitle,
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle
+} from "../../components/ui";
 import { RegisterForm } from "../../components/form";
 import {Link} from "react-router-dom";
 

@@ -72,7 +72,7 @@ export const allStudentsSubjectsReducer = ( state: any, { type, payload }: any) 
     const newState = [ ...state ];
     switch (type) {
         case "send":
-            const updatedItem = parseBackendTeacherSubjectsData([payload])[0];
+            const updatedItem = parseBackendStudentsSubjectsData([payload])[0];
             return newState.map((item: any) =>
                 item.taskId === updatedItem.taskId ? updatedItem : item
             );

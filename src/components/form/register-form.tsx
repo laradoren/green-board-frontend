@@ -28,7 +28,7 @@ const registerSchema = z.object({
 });
 
 export const RegisterForm = () => {
-    const { setCurrentUser } = useContext(GlobalContext);
+    const { setCurrentUser, setErrors } = useContext(GlobalContext);
 
     const [findUser] = useLazyQuery(FIND_USER);
     const [registerUser] = useMutation(REGISTER_USER);
@@ -69,7 +69,7 @@ export const RegisterForm = () => {
             localStorage.setItem("teacher", teacher);
             localStorage.setItem("student", student);
             window.location.href = '/';
-        });
+        }).catch(e => setErrors(e));
     }
 
     return (
@@ -114,7 +114,7 @@ export const RegisterForm = () => {
                             <FormItem>
                                 <FormLabel>Пароль</FormLabel>
                                 <FormControl>
-                                    <Input disabled={disabled} placeholder="Введіть пароль" {...field} />
+                                    <Input type={"password"} disabled={disabled} placeholder="Введіть пароль" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>

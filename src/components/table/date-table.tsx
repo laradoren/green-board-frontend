@@ -32,6 +32,8 @@ export const DateTable = ({table, columns, dialog, search, disableDelete }: {tab
                     className="max-w-sm"
                 />}
 
+                {!disableDelete && search}
+
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="outline" className="ml-auto">
@@ -123,7 +125,7 @@ export const DateTable = ({table, columns, dialog, search, disableDelete }: {tab
                 </Table>
             </div>
             <div className="py-4">
-              <DataTablePagination table={table} />
+              <DataTablePagination disableDelete={disableDelete} table={table} />
             </div>
         </>
     )

@@ -66,7 +66,7 @@ export const parseBackendStudentData = (data: any) =>
     data.map(((item:any) => ({id: item._id, fullname: item.user.fullname, email: item.user.email, group: item.group})));
 
 export const parseBackendTeacherSubjectsData = (data: any) =>
-    data.map(((item:any) => ({id: item._id, tasks: parseBackendTeacherTasksData(item.tasks), title: item.title})));
+    data.map(((item:any) => ({id: item._id, tasks: parseBackendTeacherTasksData(item.tasks), groups: item.groups, title: item.title})));
 
 export const parseBackendTeacherTasksData = (data: any) =>
     data.map(((item:any) => ({id: item._id, name: item.name, description: item.description, hometasks: parseBackendTeacherHomeTasksData((item.hometasks))})));
@@ -89,5 +89,25 @@ export const parseBackendStudentsSubjectsData = (data: any) => {
         })
     })
     return parsedData;
+}
+
+export const calculateProgressValue = (allGroup: any, subjects: any, selected: any, hometasks: any) => {
+    if(!selected) {
+        return 0;
+    }
+    const currentSubject = subjects.filter((item: any) => item.id === selected)[0];
+    let allStudents:any[] = [];
+
+    if(!currentSubject.groups) {
+        return 0
+    }
+
+        allGroup.allGroups.map((g: any) => {
+            if(currentSubject.groups.includes(g._id)) {
+                allStudents = allStudents.concat(g.students);
+            }
+        });
+
+    return hometasks.length/allStudents.length*100;
 }
 

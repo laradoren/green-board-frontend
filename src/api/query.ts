@@ -45,7 +45,10 @@ export const FIND_USER = gql`
 export const GET_ALL_GROUPS = gql`
     query AllGroups {
         allGroups {
-            _id code
+            _id code 
+            students {
+                _id
+            }
         }
     }
 `
@@ -53,8 +56,9 @@ export const GET_ALL_GROUPS = gql`
 export const GET_TEACHER_SUBJECTS = gql`
     query GetTeacherSubjects($id: ID!) {
         getTeacherSubjects(id: $id) {
-            _id title tasks {
-                _id name description             
+            _id title groups 
+            tasks {
+                _id name description
                 hometasks {
                     _id
                     text

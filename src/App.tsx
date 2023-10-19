@@ -9,12 +9,14 @@ import {GroupList} from "./pages/admin/GroupList";
 import {useContext} from "react";
 import {LogoutPage} from "./pages/login/LogoutPage";
 import GlobalContext from "./context/GlobalContext";
+import {ErrorAlert} from "./components/alert/error-alert";
 
 
 function App() {
     const { currentUser } = useContext(GlobalContext);
     return (
       <div className="main-page bg-accent relative flex min-h-screen flex-col">
+          <ErrorAlert />
           {currentUser.token ?
               <>
                   <Card className="m-5 h-full">
@@ -36,7 +38,6 @@ function App() {
                   <Route path={"register"} element={<RegisterPage />} />
               </Routes>
           }
-
       </div>
   );
 }

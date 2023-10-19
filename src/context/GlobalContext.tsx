@@ -31,6 +31,8 @@ const GlobalContext = React.createContext<IGlobalContext>({
     allStudentsSubjects: [],
     createHomeTask: (data: any) => {},
     updateHomeTask: (data: any) => {},
+    errors: null,
+    setErrors: (data: any) => {},
 });
 
 export default GlobalContext;

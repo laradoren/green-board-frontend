@@ -39,7 +39,7 @@ export const SubjectList = () => {
                     {
                         subjects.map((subject:TeacherSubject) => {
                             return (
-                                <TabsContent className="mt-0" key={subject.id} value={subject.id}><TaskList tasks={subject.tasks} /></TabsContent>
+                                <TabsContent className="mt-0" key={subject.id} value={subject.id}><TaskList selected={selected} tasks={subject.tasks} /></TabsContent>
                             )
                         })
                     }
@@ -55,7 +55,7 @@ export const SubjectList = () => {
     );
 }
 
-const TaskList = ({tasks}: {tasks: Task[]}) => {
+const TaskList = ({tasks, selected}: {tasks: Task[], selected: any}) => {
     return (
         <ScrollArea className="h-[calc(100vh-16.35rem)] w-[calc(100vw-30.5rem)] rounded-md border">
             <div className="px-4">
@@ -64,7 +64,7 @@ const TaskList = ({tasks}: {tasks: Task[]}) => {
                         <Label className="flex w-full justify-center mt-4">
                             Для цієї дисципліни ще не створювались завдання
                         </Label>
-                    ) : tasks.map((task:Task) => <TaskItem task={task} key={task.id} />)
+                    ) : tasks.map((task:Task) => <TaskItem task={task} key={task.id} selected={selected} />)
                 }
             </div>
         </ScrollArea>

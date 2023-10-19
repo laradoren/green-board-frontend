@@ -26,10 +26,10 @@ const loginSchema = z.object({
 });
 
 export const LoginForm = () => {
-    const { setCurrentUser } = useContext(GlobalContext);
+    const { setCurrentUser, setErrors } = useContext(GlobalContext);
 
     const [loginUser, {loading}] = useLazyQuery(LOGIN_USER, {
-        onError: error=> console.error(error),
+        onError: error=> setErrors(error),
         onCompleted: (data) => {
             let {token, user, group, teacher, student} = data.login;
             setCurrentUser({ token, group, teacher, student, data: user });
@@ -76,7 +76,7 @@ export const LoginForm = () => {
                         <FormItem>
                             <FormLabel>Пароль</FormLabel>
                             <FormControl>
-                                <Input placeholder="Введіть пароль" {...field} />
+                                <Input type={"password"} placeholder="Введіть пароль" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>

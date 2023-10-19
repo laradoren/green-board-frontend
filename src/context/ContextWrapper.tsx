@@ -21,6 +21,7 @@ import {initCurrentUser} from "../lib/helper";
 
 const ContextWrapper = ({ children }: any) => {
     const [currentUser, setCurrentUser] = useState<IUserData>(initCurrentUser());
+    const [errors, setErrors] = useState(null);
 
     useEffect(() => {
         if(currentUser.token) return;
@@ -108,62 +109,70 @@ const ContextWrapper = ({ children }: any) => {
         }
     }, [allTeachersData, allStudentsData, allTeacherSubjectsData, allStudentsSubjectsData]);
 
+    useEffect(() => {
+        if(errors) {
+            setTimeout(() => {
+                setErrors(null);
+            }, 3000)
+        }
+    }, [errors])
+
     const createSingleTeacherAction = (data: any) => createSingleTeacher({variables: {newUser: data}})
         .then((result) => {
             dispatchCallTeachers({type: "create", payload: result.data.createUser});
-        });
+        }).catch(e => setErrors(e));
     const createTeachersListAction = (list: any) => createTeachersList({variables: {list}})
         .then((result) => {
             dispatchCallTeachers({type: "file", payload: result.data.createTeachersList});
-        });
+        }).catch(e => setErrors(e));
     const deleteTeachersListAction = (list: any) => deleteTeachersList({variables: {list}})
         .then((result) => {
             dispatchCallTeachers({type: "delete", payload: result.data.deleteTeachersList});
-        });
+        }).catch(e => setErrors(e));
     const updateTeachersListAction = (data: any) => updateTeacher({variables: {...data}})
         .then((result) => {
             dispatchCallTeachers({type: "update", payload: result.data.updateTeacher});
-        });
+        }).catch(e => setErrors(e));
 
     const createGroupAction = (code: string, students: any) => createGroup({variables: {newGroup:{code, students}}})
         .then((result) => {
             dispatchCallStudents({type: "file", payload: result.data.createGroup});
-        });
+        }).catch(e => setErrors(e));
 
     const deleteStudentsListAction = (list: any) => deleteStudentsList({variables: {list}})
         .then((result) => {
             dispatchCallStudents({type: "delete", payload: result.data.deleteStudentsList});
-        });
+        }).catch(e => setErrors(e));
 
     const updateStudentAction = (data: any) => updateStudent({variables: {...data}})
         .then((result) => {
             dispatchCallStudents({type: "update", payload: result.data.updateStudent});
-        });
+        }).catch(e => setErrors(e));
 
     const createTeacherSubjectAction = (data: any) => createSubject({variables: {newSubject: data}})
         .then((result) => {
             dispatchCallTeacherSubjects({type: "create", payload: result.data.createSubject});
-        });
+        }).catch(e => setErrors(e));
 
     const createTaskAction = (data: any) => createTask({variables: {newTask: data}})
         .then((result) => {
             dispatchCallTeacherSubjects({type: "task", payload: result.data.createTask});
-        });
+        }).catch(e => setErrors(e));
 
     const deleteTaskAction = (data: any) => deleteTask({variables: {...data}})
         .then((result) => {
             dispatchCallTeacherSubjects({type: "delete", payload: result.data.deleteTask});
-        });
+        }).catch(e => setErrors(e));
 
     const createHomeTaskAction = (data: any) => createHometask({variables: {hometask: data}})
         .then((result) => {
             dispatchCallStudentSubjects({type: "send", payload: result.data.createHometask});
-        });
+        }).catch(e => setErrors(e));
 
     const updateHomeTaskAction = (data: any) => updateHometask({variables: {...data}})
         .then((result) => {
             dispatchCallTeacherSubjects({type: "update", payload: result.data.updateHometask});
-        });
+        }).catch(e => setErrors(e));
 
   return (
     <GlobalContext.Provider
@@ -187,6 +196,7 @@ const ContextWrapper = ({ children }: any) => {
           deleteTask: deleteTaskAction,
           createHomeTask: createHomeTaskAction,
           updateHomeTask: updateHomeTaskAction,
+          errors, setErrors
       }}
     >
       {children}
